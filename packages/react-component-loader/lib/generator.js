@@ -64,6 +64,7 @@ exports.component = function (components, config, ctx) {
 
   let resultStr = '';
   const currentPath = ['.'];
+  // value用不到
   traverseTree(components, (value, key, hasChild) => {
     currentPath.push(key);
     if (config.externals.indexOf(currentPath.slice(1).join('/')) > -1) return;
@@ -102,6 +103,7 @@ exports.component = function (components, config, ctx) {
       }
     }
   }, () => currentPath.pop());
+  console.log([`${resultStr}\n`, importHelper.toImportList()]);
   return [`${resultStr}\n`, importHelper.toImportList()];
 };
 

@@ -1,5 +1,5 @@
 {
-  "name": "react-redux-component-loader",
+  "name": "@test/react-redux-component-loader",
   "version": "5.0.0-alpha1",
   "description": "as title",
   "main": "index.js",
@@ -27,7 +27,7 @@
   },
   "peerDependencies": {
     "react": ">=15",
-    "rrc-loader-helper": "^2"
+    "@test/rrc-loader-helper": "^2"
   },
   "devDependencies": {
     "eslint": "^5.8.0",

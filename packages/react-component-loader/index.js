@@ -18,8 +18,12 @@ module.exports = function rrcLoader(request) {
   const componentDir = query.componentDir || 'components';
   const ctx = this;
   const namespace = path.dirname(path.relative(path.join(process.cwd(), 'src', componentDir), ctx.resourcePath));
+  // console.log(query);
+  // console.log(namespace);
+  // console.log(reducerEnhanceName);
   if (query.types) {
     // process action in types.js
+    console.log([`const ${namespaceName} = "/${namespace}/";`, request].join('\n'));
     return [`const ${namespaceName} = "/${namespace}/";`, request].join('\n');
   }
   if (ctx.resourcePath.endsWith(`/${reducerName}.js`)) {
@@ -60,6 +64,7 @@ module.exports = function rrcLoader(request) {
   const items = ['reducers', 'saga', 'component'].filter(value => request.indexOf(config[value]) > -1);
   if (items.length > 0) {
     const components = componentList(config);
+    console.log('components', components);
     this.addContextDependency(config.dir);
     items.forEach((value) => {
       const [componentVarList, componentImportList] = generators[value](components, config, ctx);
