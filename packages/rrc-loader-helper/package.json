@@ -1,6 +1,6 @@
 {
   "name": "@test/rrc-loader-helper",
-  "version": "2.1.3",
+  "version": "6.0.0",
   "description": "",
   "main": "index.js",
   "directories": {
@@ -27,9 +27,9 @@
   },
   "homepage": "https://github.com/renaesop/rrc-loader-helper#readme",
   "dependencies": {
+    "@babel/runtime": "^7.1.5",
     "immer": "^1.7.4",
-    "reduce-reducers": "^0.4.3",
-    "@babel/runtime": "^7.1.5"
+    "reduce-reducers": "^0.4.3"
   },
   "devDependencies": {
     "@babel/cli": "^7.1.5",
@@ -49,10 +49,10 @@
     "redux-saga": "^0.16.2"
   },
   "peerDependencies": {
-    "sheinq": "^1.1.19",
     "react": ">=15",
     "redux": "4",
-    "redux-saga": "1"
+    "redux-saga": "1",
+    "sheinq": "^1.1.19"
   },
   "ava": {
     "files": [

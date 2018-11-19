@@ -1,6 +1,6 @@
 {
   "name": "@test/react-redux-component-loader",
-  "version": "5.0.0-alpha1",
+  "version": "6.0.0",
   "description": "as title",
   "main": "index.js",
   "files": [
@@ -26,8 +26,8 @@
     "object-assign": "^4.1.0"
   },
   "peerDependencies": {
-    "react": ">=15",
-    "@test/rrc-loader-helper": "^2"
+    "@test/rrc-loader-helper": "^2",
+    "react": ">=15"
   },
   "devDependencies": {
     "eslint": "^5.8.0",
