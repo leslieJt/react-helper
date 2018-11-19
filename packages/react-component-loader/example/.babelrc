@@ -1,0 +1,7 @@
+{
+  "presets": [
+    ["es2015", {
+      "modules": false
+    }], "react"],
+  "plugins": ["syntax-dynamic-import", "../lib/babel-plugin-reducer-enhance"]
+}
