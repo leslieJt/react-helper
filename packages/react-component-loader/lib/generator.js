@@ -64,7 +64,6 @@ exports.component = function (components, config, ctx) {
 
   let resultStr = '';
   const currentPath = ['.'];
-  // value用不到
   traverseTree(components, (value, key, hasChild) => {
     currentPath.push(key);
     if (config.externals.indexOf(currentPath.slice(1).join('/')) > -1) return;
@@ -73,7 +72,6 @@ exports.component = function (components, config, ctx) {
       ctx.addDependency(getMetaPath(currentPath, config));
       const shouldBuild = shouldRoute(config, currentPath, 'view.jsx');
       if (!shouldBuild) {
-        // public component
         glob('*.jsx', {
           cwd: path.join(...[config.dir].concat(currentPath)),
         }).forEach((item) => {
@@ -83,7 +81,6 @@ exports.component = function (components, config, ctx) {
         const compName = currentPath.slice(1).join('_');
         let component;
         const reducerKey = currentPath.slice(1).join('/');
-        // me.json中retain配置优先
         const retain = Object.prototype.hasOwnProperty.call(metaInfo, 'retain') ? metaInfo.retain : config.retain;
         if (metaInfo.sync) {
           const comp = JSON.stringify(`${currentPath.join('/')}/view.jsx`);
