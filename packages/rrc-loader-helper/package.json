@@ -11,8 +11,8 @@
     "src/**/*.js"
   ],
   "scripts": {
-    "test": "ava",
     "build": "babel src --out-dir lib",
+    "test": "ava",
     "preversion": "npm test && npm run build"
   },
   "repository": {
