@@ -26,12 +26,13 @@
     "object-assign": "^4.1.0"
   },
   "peerDependencies": {
-    "@test/rrc-loader-helper": "^2",
+    "@test/rrc-loader-helper": "^6.0.0",
     "react": ">=15"
   },
   "devDependencies": {
     "eslint": "^5.8.0",
     "eslint-config-airbnb-base": "^13.1.0",
-    "eslint-plugin-import": "^2.14.0"
+    "eslint-plugin-import": "^2.14.0",
+    "@test/rrc-loader-helper": "^6.0.0"
   }
 }
