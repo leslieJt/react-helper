@@ -1,6 +1,6 @@
 {
   "name": "@test/react-redux-component-loader",
-  "version": "6.0.1",
+  "version": "6.0.3",
   "description": "as title",
   "main": "index.js",
   "files": [
@@ -30,9 +30,9 @@
     "react": ">=15"
   },
   "devDependencies": {
+    "@test/rrc-loader-helper": "^6.0.3",
     "eslint": "^5.8.0",
     "eslint-config-airbnb-base": "^13.1.0",
-    "eslint-plugin-import": "^2.14.0",
-    "@test/rrc-loader-helper": "^6.0.0"
+    "eslint-plugin-import": "^2.14.0"
   }
 }
