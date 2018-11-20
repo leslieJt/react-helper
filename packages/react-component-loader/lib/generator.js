@@ -103,7 +103,6 @@ exports.component = function (components, config, ctx) {
       }
     }
   }, () => currentPath.pop());
-  console.log([`${resultStr}\n`, importHelper.toImportList()]);
   return [`${resultStr}\n`, importHelper.toImportList()];
 };
 
