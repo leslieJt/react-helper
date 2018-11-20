@@ -63,3 +63,5 @@ typings/
 .npmrc
 /packages/rrc-loader-helper/lib
 lerna-debug.log
+
+dist/
