@@ -19,12 +19,9 @@ module.exports = function rrcLoader(request) {
   const ctx = this;
   const namespace = path.dirname(path.relative(path.join(process.cwd(), 'src', componentDir), ctx.resourcePath));
   if (query.types) {
-    // process action in types.js
-    console.log([`const ${namespaceName} = "/${namespace}/";`, request].join('\n'));
     return [`const ${namespaceName} = "/${namespace}/";`, request].join('\n');
   }
   if (ctx.resourcePath.endsWith(`/${reducerName}.js`)) {
-    // process reducer in reducer.js
     let json;
     try {
       json = require(path.join(path.dirname(ctx.resourcePath), 'me.json'));
@@ -32,14 +29,12 @@ module.exports = function rrcLoader(request) {
       json = {};
     }
     if (json.mobx) {
-      // process mobx
       return [
         `import ${enhanceName} from 'rrc-loader-helper/lib/mobx-adapter';`,
         `const ${reducerEnhanceName} = "${namespace}";`,
         request,
       ].join('\n');
     }
-    // "route": "/:id?" ?
   }
   if (query.bundle) {
     return generators.bundle(reducerName, ctx);
@@ -61,7 +56,6 @@ module.exports = function rrcLoader(request) {
   const items = ['reducers', 'saga', 'component'].filter(value => request.indexOf(config[value]) > -1);
   if (items.length > 0) {
     const components = componentList(config);
-    console.log('components', components);
     this.addContextDependency(config.dir);
     items.forEach((value) => {
       const [componentVarList, componentImportList] = generators[value](components, config, ctx);
