@@ -1,5 +1,5 @@
 {
-  "name": "@test/rrc-loader-helper",
+  "name": "rrc-loader-helper",
   "version": "6.0.4",
   "description": "",
   "main": "index.js",

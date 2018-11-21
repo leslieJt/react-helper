@@ -1,5 +1,5 @@
 {
-  "name": "@test/react-redux-component-loader",
+  "name": "react-redux-component-loader",
   "version": "6.0.6",
   "description": "as title",
   "main": "index.js",
@@ -26,11 +26,11 @@
     "object-assign": "^4.1.0"
   },
   "peerDependencies": {
-    "@test/rrc-loader-helper": "^6.0.0",
+    "rrc-loader-helper": "^6.0.0",
     "react": ">=15"
   },
   "devDependencies": {
-    "@test/rrc-loader-helper": "^6.0.4",
+    "rrc-loader-helper": "^6.0.4",
     "eslint": "^5.8.0",
     "eslint-config-airbnb-base": "^13.1.0",
     "eslint-plugin-import": "^2.14.0"
