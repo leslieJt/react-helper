@@ -2,6 +2,8 @@
   "name": "root",
   "private": true,
   "scripts": {
+    "bootstrap": "lerna bootstrap",
+    "publish": "lerna publish",
     "changelog": "lerna-changelog"
   },
   "devDependencies": {
