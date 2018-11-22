@@ -3,19 +3,19 @@ import { put } from 'redux-saga/effects';
 import { getStore } from '../inj-dispatch';
 
 function isGenerator(obj) {
-  return 'function' == typeof obj.next && 'function' == typeof obj.throw;
+  return typeof obj.next === 'function' && typeof obj.throw === 'function';
 }
 
 function isGeneratorFunction(obj) {
-  const constructor = obj.constructor;
+  const { constructor } = obj;
   if (!constructor) return false;
-  if ('GeneratorFunction' === constructor.name || 'GeneratorFunction' === constructor.displayName) return true;
+  if (constructor.name === 'GeneratorFunction' || constructor.displayName === 'GeneratorFunction') return true;
   return isGenerator(constructor.prototype);
 }
 
 export default function (obj, page) {
-  if(!(typeof obj === 'object' && !Array.isArray(obj))){
-   throw new Error('Your reducer must be an object, if you wanna use MobX style!');
+  if (!(typeof obj === 'object' && !Array.isArray(obj))) {
+    throw new Error('Your reducer must be an object, if you wanna use MobX style!');
   }
   const originalObject = obj;
   const keys = Object.keys(originalObject);
@@ -54,4 +54,4 @@ export default function (obj, page) {
     mapping,
   };
   return result;
-};
+}

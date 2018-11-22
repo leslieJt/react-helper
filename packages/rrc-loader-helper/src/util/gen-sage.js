@@ -10,13 +10,13 @@ import {
 } from '../mark-status';
 
 function isGenerator(obj) {
-  return 'function' == typeof obj.next && 'function' == typeof obj.throw;
+  return typeof obj.next === 'function' && typeof obj.throw === 'function';
 }
 
 function isGeneratorFunction(obj) {
-  var constructor = obj.constructor;
+  const { constructor } = obj;
   if (!constructor) return false;
-  if ('GeneratorFunction' === constructor.name || 'GeneratorFunction' === constructor.displayName) return true;
+  if (constructor.name === 'GeneratorFunction' || constructor.displayName === 'GeneratorFunction') return true;
   return isGenerator(constructor.prototype);
 }
 
@@ -41,7 +41,7 @@ export default function genSagas(obj, page, ctx) {
   if (!cacheMap.get(page)) {
     const keys = Object.keys(obj);
     const result = {};
-    for (let i = 0; i < keys.length; i++) {
+    for (let i = 0; i < keys.length; i += 1) {
       const key = keys[i];
       if (isGeneratorFunction(obj[key])) {
         result[`${page}/${key}`] = obj[key];
@@ -49,11 +49,11 @@ export default function genSagas(obj, page, ctx) {
     }
     if (Object.keys(result).length === 0) return null;
     cacheMap.set(page, function* generatedSaga() {
-      const keys = Object.keys(result);
-      for (let i = 0; i < keys.length; i++) {
-        const key = keys[i];
+      const actionList = Object.keys(result);
+      for (let i = 0; i < actionList.length; i += 1) {
+        const key = actionList[i];
         const fn = result[key];
-        yield takeLatest(key, function* (action) {
+        yield takeLatest(key, function* takeLatestActionSaga(action) {
           const currentFrame = pushRunningStack();
           const newPutFn = newInputFactory(fn);
           const markings = [];
@@ -70,8 +70,8 @@ export default function genSagas(obj, page, ctx) {
                 added.push(statusVar);
               }
               if (added.length) {
-                yield newPutFn(state => {
-                  added.forEach(mark => state[mark] = 0);
+                yield newPutFn((state) => {
+                  added.forEach((mark) => { state[mark] = 0; });
                 }, 'change some flags to loading');
               }
               popRunningStack();
@@ -79,14 +79,14 @@ export default function genSagas(obj, page, ctx) {
               pushRunningStack(currentFrame);
             }
             if (markings.length) {
-              yield newPutFn(state => {
-                markings.forEach(mark => state[mark] = 1);
+              yield newPutFn((state) => {
+                markings.forEach((mark) => { state[mark] = 1; });
               }, 'change some flags to done');
             }
           } catch (e) {
             if (markings.length) {
-              yield newPutFn(state => {
-                markings.forEach(mark => state[mark] = 2);
+              yield newPutFn((state) => {
+                markings.forEach((mark) => { state[mark] = 2; });
               }, 'change some flags to error');
             }
             throw e;

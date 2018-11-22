@@ -19,7 +19,7 @@ export function mappingVal(val, mapping) {
       return reduced;
     }, init);
   }
-  console.error('Unexpected argument mapping: ' + mapping +'.\n mapping should be an array or an object');
+  console.error('Unexpected argument mapping: ' + mapping + '.\n mapping should be an array or an object');
   return val;
 }
 
@@ -38,6 +38,6 @@ export function reverseMappingVal(val, mapping) {
       return reduced;
     }, {});
   }
-  console.error('Unexpected argument mapping: ' + mapping +'.\n mapping should be an array or an object');
+  console.error('Unexpected argument mapping: ' + mapping + '.\n mapping should be an array or an object');
   return val;
 }

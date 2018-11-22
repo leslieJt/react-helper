@@ -9,7 +9,7 @@ const path = require('path');
 function reducedOne(cwd) {
   return function (reduced, dir) {
     const newCwd = path.join(cwd, dir);
-    if (glob('view.jsx', { cwd: newCwd }).length) {
+    if (glob('me.json', { cwd: newCwd }).length) {
       reduced[dir] = true;
       return reduced;
     }
@@ -24,6 +24,7 @@ function reducedOne(cwd) {
     return reduced;
   };
 }
+
 module.exports = function (config) {
   return glob('*/', {
     cwd: config.dir,

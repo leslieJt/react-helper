@@ -1,7 +1,7 @@
 export function getValKeyPath(obj, keyPath) {
   let res = obj;
   for (let i = 0; i < keyPath.length; i++) {
-    res = res[keyPath[i]]
+    res = res[keyPath[i]];
   }
   return res;
 }
@@ -9,7 +9,7 @@ export function getValKeyPath(obj, keyPath) {
 export function setValKeyPath(obj, keys, val) {
   const key = keys[0];
   let tempVal;
-  if (Array.isArray(obj) || typeof key === "number") {
+  if (Array.isArray(obj) || typeof key === 'number') {
     tempVal = Object.assign([], obj);
   } else {
     tempVal = Object.assign({}, obj);

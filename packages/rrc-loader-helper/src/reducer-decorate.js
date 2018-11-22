@@ -1,9 +1,11 @@
-import produce from 'immer';
+import produce, { setAutoFreeze } from 'immer';
 import { sendError } from 'sheinq';
 import theAction, { editInSaga } from './actions';
 import {
   setValKeyPath,
 } from './util/obj_key_path_ops';
+
+setAutoFreeze(false);
 
 function builtinReducer(state, action, page) {
   if (action.page !== page) return null;

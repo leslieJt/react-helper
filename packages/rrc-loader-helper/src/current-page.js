@@ -1,12 +1,12 @@
 let currentPage;
-let callbacks = [];
+const callbacks = [];
 
 export function get() {
   return currentPage;
 }
 
 export function set(c) {
-  for (let i = 0; i < callbacks.length; i++ ) {
+  for (let i = 0; i < callbacks.length; i++) {
     callbacks[i](currentPage, c);
   }
   currentPage = c;

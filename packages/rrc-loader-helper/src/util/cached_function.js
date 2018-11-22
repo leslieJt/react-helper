@@ -12,7 +12,7 @@ import {
 const onChangeCache = new Map();
 const connector = '*&*^*&';
 
-setCallback(function () {
+setCallback(() => {
   onChangeCache.clear();
 });
 
@@ -30,9 +30,9 @@ function onchange(caller, e, page, val, mapping) {
   if (!caller.fns.disallow(value)) {
     store.dispatch({
       type: action,
-      page: page,
+      page,
       key: val,
-      value: value
+      value
     });
   }
 
@@ -48,15 +48,16 @@ function generateCacheKey(page, val, mapping) {
   return key;
 }
 
-export default function getCachedOnchangeFunction(page, val, mapping, disallow = ok, originOnchange = noop) {
-  let key = generateCacheKey(page, val, mapping);
+export default function getCachedOnchangeFunction(page,
+  val, mapping, disallow = ok, originOnchange = noop) {
+  const key = generateCacheKey(page, val, mapping);
 
   let cache = onChangeCache.get(key);
   if (cache) {
     // disallow or originOnchange may update, but cache reference won't change.
     cache.fns = { disallow, originOnchange };
   } else {
-    cache = (e) => onchange(cache, e, page, val, mapping);
+    cache = e => onchange(cache, e, page, val, mapping);
     cache.fns = { disallow, originOnchange };
     onChangeCache.set(key, cache);
   }

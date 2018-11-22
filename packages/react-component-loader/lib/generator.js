@@ -70,8 +70,9 @@ exports.component = function (components, config, ctx) {
     if (!hasChild) {
       const metaInfo = getMeta(currentPath, config);
       ctx.addDependency(getMetaPath(currentPath, config));
-      const shouldBuild = shouldRoute(config, currentPath, 'view.jsx');
+      const shouldBuild = shouldRoute(config, currentPath, 'me.json');
       if (!shouldBuild) {
+        // public component
         glob('*.jsx', {
           cwd: path.join(...[config.dir].concat(currentPath)),
         }).forEach((item) => {
@@ -81,6 +82,7 @@ exports.component = function (components, config, ctx) {
         const compName = currentPath.slice(1).join('_');
         let component;
         const reducerKey = currentPath.slice(1).join('/');
+        // me.json中retain配置优先
         const retain = Object.prototype.hasOwnProperty.call(metaInfo, 'retain') ? metaInfo.retain : config.retain;
         if (metaInfo.sync) {
           const comp = JSON.stringify(`${currentPath.join('/')}/view.jsx`);
@@ -114,7 +116,7 @@ exports.reducers = function (components, config, ctx) {
     currentPath.push(key);
     const metaInfo = getMeta(currentPath, config);
     ctx.addDependency(getMetaPath(currentPath, config));
-    const shouldBuild = shouldRoute(config, currentPath, 'view.jsx');
+    const shouldBuild = shouldRoute(config, currentPath, 'me.json');
     const forceSync = config.externals.indexOf(currentPath.slice(1).join('/')) > -1;
     if (!hasChild && (shouldBuild || forceSync)) {
       let identifier = '""';
@@ -144,7 +146,7 @@ exports.saga = function (components, config, ctx) {
     currentPath.push(key);
     const metaInfo = getMeta(currentPath, config);
     ctx.addDependency(getMetaPath(currentPath, config));
-    const shouldBuild = shouldRoute(config, currentPath, 'view.jsx');
+    const shouldBuild = shouldRoute(config, currentPath, 'me.json');
     const forceSync = config.externals.indexOf(currentPath.slice(1).join('/')) > -1;
     if (!hasChild && (shouldBuild || forceSync)) {
       if (!metaInfo.mobx && (forceSync || metaInfo.sync)) {

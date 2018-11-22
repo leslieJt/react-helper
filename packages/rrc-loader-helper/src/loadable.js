@@ -85,6 +85,7 @@ class Pager extends Component {
         if (firstScreen) firstScreen = !firstScreen;
       }, 4);
     }
+    // @TODO change to configurable
     // only reserve 10 pages in history
     const l = historyList.length;
     if (!l) {

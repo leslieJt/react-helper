@@ -20,5 +20,5 @@ export function registerReducer(reducer) {
     const index = registeredReducers.findIndex(reducer);
     if (index === -1) return;
     registeredReducers.splice(index, 1);
-  }
+  };
 }

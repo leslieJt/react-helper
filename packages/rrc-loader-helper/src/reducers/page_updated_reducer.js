@@ -12,7 +12,7 @@ const hasOwn = Object.prototype.hasOwnProperty;
 
 const matchRetained = ({ url }, state) => {
   const retains = state[r];
-  if (!retains) return;
+  if (!retains) return undefined;
 
   const key = genKey(url);
 
@@ -27,7 +27,7 @@ const backupPrevState = (state) => {
   // siteGuideModel/edit/2066
   const key = genKey(url);
 
-  return produce(state, draft => {
+  return produce(state, (draft) => {
     const retainedData = { data: draft[page], meta: { path, params } };
 
     draft[r] = Object.assign(draft[r] || {}, { [key]: retainedData });
@@ -37,21 +37,16 @@ const backupPrevState = (state) => {
 const restoreNextState = (state, action) => {
   const retainedData = matchRetained(action.payload.match, state);
 
-  return produce(state, draft => {
+  return produce(state, (draft) => {
     if (retainedData) {
       draft[action.payload.page] = retainedData.data;
-    } else {
-      if (isNeedRetain(action.payload.match))
-        draft[action.payload.page] = undefined;
-    }
+    } else if (isNeedRetain(action.payload.match)) draft[action.payload.page] = undefined;
   });
 };
 
 const retainStateReducer = (state, action) => {
-  if (!action.payload.retain)
-    return state;
-  if (!invariant(action.payload.match, 'action\'s payload must has router params!'))
-    return state;
+  if (!action.payload.retain) return state;
+  if (!invariant(action.payload.match, 'action\'s payload must has router params!')) return state;
 
   // match object example:
   //   params: {id: "2066"}

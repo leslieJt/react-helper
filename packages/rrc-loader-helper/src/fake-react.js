@@ -5,7 +5,7 @@ import {
 } from './util';
 import {
   get as getCurrentPage,
-} from './current-page'
+} from './current-page';
 import { getStore } from './inj-dispatch';
 
 const raw = React.createElement.bind(React);
