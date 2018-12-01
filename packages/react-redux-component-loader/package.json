@@ -1,6 +1,6 @@
 {
   "name": "react-redux-component-loader",
-  "version": "6.0.6",
+  "version": "6.1.0-alpha.0",
   "description": "as title",
   "main": "index.js",
   "files": [
@@ -26,8 +26,8 @@
     "object-assign": "^4.1.0"
   },
   "peerDependencies": {
-    "rrc-loader-helper": "^6.0.0",
-    "react": ">=15"
+    "react": ">=15",
+    "rrc-loader-helper": "^6.0.0"
   },
   "devDependencies": {
     "rrc-loader-helper": "6.0.7-alpha.0"
