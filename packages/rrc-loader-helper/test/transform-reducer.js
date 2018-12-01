@@ -1,7 +1,7 @@
 import test from 'ava';
 import transformReducer from '../src/util/transform-reducer';
 
-test('#transform reducer', t => {
+test('#transform reducer', (t) => {
   const page = 'kkk';
 
   const raw = {
@@ -20,7 +20,7 @@ test('#transform reducer', t => {
     defaultState: result.defaultState,
     hello: result.hello,
     zz: result.zz,
-    ['.__inner__']: {
+    '.__inner__': {
       originalObject: raw,
       mapping: Object.assign(Object.create(raw), {
         [`${page}/defaultState`]: raw.defaultState,

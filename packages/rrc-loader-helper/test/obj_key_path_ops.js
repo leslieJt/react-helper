@@ -4,7 +4,7 @@ import {
   setValKeyPath,
 } from '../src/util/obj_key_path_ops';
 
-test('#getVal', t => {
+test('#getVal', (t) => {
   const examples = {
     a: {
       hello: {
@@ -36,7 +36,7 @@ test('#getVal', t => {
   }
 });
 
-test('#setVal', t => {
+test('#setVal', (t) => {
   const examples = {
     a: {
       hello: {

@@ -1,7 +1,7 @@
 import produce from 'immer';
 import { cleanPage } from '../actions';
 import invariant from '../util/invariant';
-import { registerReducer } from './register_reducer';
+import registerReducer from './register_reducer';
 
 export function cleanStore(draft, page, url) {
   if (draft['.retained'][url]) draft['.retained'][url] = undefined;

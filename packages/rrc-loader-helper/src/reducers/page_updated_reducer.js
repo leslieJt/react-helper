@@ -65,7 +65,7 @@ const retainStateReducer = (state, action) => {
   return nextState;
 };
 
-export const pageUpdatedReducer = (state, action) => {
+export default function pageUpdatedReducer(state, action) {
   // page changed.
   if (action.type === updatePage) {
     // @TODO pipe reducers

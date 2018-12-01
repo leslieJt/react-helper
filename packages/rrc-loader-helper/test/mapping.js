@@ -38,14 +38,14 @@ const expectResults = [
   },
 ];
 
-test('#mapping value', t => {
-  for (let i = 0; i < examples.length; i++ ) {
+test('#mapping value', (t) => {
+  for (let i = 0; i < examples.length; i++) {
     t.deepEqual(expectResults[i], mappingVal(examples[i], mapping[i]), 'mapping should work');
   }
 });
 
-test('#reverse mapping value', t => {
-  for (let i = 0; i < examples.length; i++ ) {
+test('#reverse mapping value', (t) => {
+  for (let i = 0; i < examples.length; i++) {
     t.deepEqual(examples[i], reverseMappingVal(expectResults[i], mapping[i]), 'mapping should work');
   }
 });

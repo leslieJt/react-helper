@@ -4,7 +4,7 @@ const noop = () => {};
 export const registeredReducers = [];
 
 // reducer can access global state.
-export function registerReducer(reducer) {
+export default function registerReducer(reducer) {
   const isValid = invariant(typeof reducer === 'function', 'handler must be a function!');
 
   if (!isValid) return noop;
