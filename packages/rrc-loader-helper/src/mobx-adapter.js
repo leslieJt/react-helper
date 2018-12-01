@@ -1,4 +1,4 @@
-import genSaga from './util/gen-sage';
+import genSaga from './sagas/gen-sage';
 import transformReducer from './util/transform-reducer';
 
 import { getStore } from './inj-dispatch';

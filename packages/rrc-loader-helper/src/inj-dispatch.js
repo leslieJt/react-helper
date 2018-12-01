@@ -1,5 +1,5 @@
 // for global unique
-import './util/gen-sage';
+import './sagas/gen-sage';
 
 let store;
 

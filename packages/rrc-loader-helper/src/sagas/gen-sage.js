@@ -3,22 +3,12 @@
  */
 import { takeLatest, put } from 'redux-saga/effects';
 
+import isGeneratorFunction from './is-generator';
 import { editInSaga } from '../actions';
 import {
   pushRunningStack,
   popRunningStack,
 } from '../mark-status';
-
-function isGenerator(obj) {
-  return typeof obj.next === 'function' && typeof obj.throw === 'function';
-}
-
-function isGeneratorFunction(obj) {
-  const { constructor } = obj;
-  if (!constructor) return false;
-  if (constructor.name === 'GeneratorFunction' || constructor.displayName === 'GeneratorFunction') return true;
-  return isGenerator(constructor.prototype);
-}
 
 const cacheMap = new Map();
 
