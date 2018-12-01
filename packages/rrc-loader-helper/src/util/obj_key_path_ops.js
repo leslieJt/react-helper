@@ -1,6 +1,6 @@
 export function getValKeyPath(obj, keyPath) {
   let res = obj;
-  for (let i = 0; i < keyPath.length; i++) {
+  for (let i = 0; i < keyPath.length; i += 1) {
     res = res[keyPath[i]];
   }
   return res;
@@ -20,4 +20,14 @@ export function setValKeyPath(obj, keys, val) {
     tempVal[key] = setValKeyPath(obj[key], keys.slice(1), val);
   }
   return tempVal;
+}
+
+export function setValKeyPathMute(obj, keys, val) {
+  const [key] = keys;
+  if (keys.length === 1) {
+    obj[key] = val;
+  } else {
+    obj[key] = setValKeyPath(obj[key], keys.slice(1), val);
+  }
+  return obj;
 }
