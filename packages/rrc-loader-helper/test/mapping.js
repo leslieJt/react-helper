@@ -4,6 +4,7 @@ import {
   reverseMappingVal,
 } from '../src/util/mapping';
 
+
 const examples = [
   {
     name: 'yuji',
