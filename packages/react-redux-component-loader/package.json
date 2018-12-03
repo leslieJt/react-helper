@@ -30,6 +30,6 @@
     "rrc-loader-helper": "^6.0.0"
   },
   "devDependencies": {
-    "rrc-loader-helper": "6.0.7-alpha.0"
+    "rrc-loader-helper": "6.1.0-alpha.2"
   }
 }
