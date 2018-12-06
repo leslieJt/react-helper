@@ -17,15 +17,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/renaesop/rrc-loader-helper.git"
+    "url": "git+https://github.com/sheinsight/react-helper.git"
   },
   "keywords": [],
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
-    "url": "https://github.com/renaesop/rrc-loader-helper/issues"
+    "url": "https://github.com/sheinsight/react-helper/issues"
   },
-  "homepage": "https://github.com/renaesop/rrc-loader-helper#readme",
+  "homepage": "https://github.com/sheinsight/react-helper#readme",
   "dependencies": {
     "@babel/runtime": "^7.1.5",
     "immer": "^1.7.4",

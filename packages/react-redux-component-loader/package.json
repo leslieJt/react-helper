@@ -12,14 +12,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/renaesop/react-component-loader.git"
+    "url": "git+https://github.com/sheinsight/react-helper.git"
   },
   "author": "renaesop",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
-    "url": "https://github.com/renaesop/react-component-loader/issues"
+    "url": "https://github.com/sheinsight/react-helper/issues"
   },
-  "homepage": "https://github.com/renaesop/react-component-loader#readme",
+  "homepage": "https://github.com/sheinsight/react-helper#readme",
   "dependencies": {
     "glob": "^7.1.3",
     "loader-utils": "^1.1.0",
