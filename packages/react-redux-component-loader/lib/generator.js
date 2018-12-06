@@ -104,7 +104,7 @@ exports.component = function (components, config, ctx) {
 
 exports.reducers = function (components, config, ctx) {
   const importHelper = new ImportHelper();
-  let resultStr = '{ \n';
+  let resultStr = '{ ".retained": (s = {}) => s, \n';
   importHelper.addDependencies('redux', '{ combineReducers }');
   const reducerDecoratorIdentifier = importHelper.addDependencies('rrc-loader-helper/lib/reducer-decorate', 'enhanceReducer');
 
@@ -132,7 +132,7 @@ exports.reducers = function (components, config, ctx) {
   }, () => {
     currentPath.pop();
   });
-  return [`${resultStr}".retained": (s = {}) => s},\n`, importHelper.toImportList()];
+  return [`${resultStr}}\n`, importHelper.toImportList()];
 };
 
 exports.saga = function (components, config, ctx) {
