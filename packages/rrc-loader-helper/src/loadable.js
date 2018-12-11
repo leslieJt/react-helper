@@ -2,12 +2,13 @@
  * Created by fed on 2017/8/31.
  */
 import React, { Component } from 'react';
-import { sendPv, sendLeave, setLeaveStartTime } from 'sheinq';
+import {
+  sendPv, sendLeave, setLeaveStartTime, sendError
+} from 'sheinq';
 
 import { set as setPage } from './current-page';
 import { getStore } from './inj-dispatch';
 import { updatePage } from './actions';
-import { registerReducer, pageUpdatedReducer } from './reducers';
 
 const historyList = [];
 let firstScreen = true;
@@ -18,8 +19,6 @@ const STATE_LIST = {
   ERROR: 2,
   PENDING: 3,
 };
-
-registerReducer(pageUpdatedReducer);
 
 class Pager extends Component {
   constructor(props) {
@@ -137,10 +136,9 @@ class Pager extends Component {
 
   // eslint-disable-next-line no-unused-vars
   componentDidCatch(error, info) {
-    // @TODO
-    // 1. 埋点？
-    // 2. use `setState` in `getDerivedStateFromError`
     // https://reactjs.org/blog/2018/10/23/react-v-16-6.html#static-getderivedstatefromerror
+    sendError(error);
+
     this.setState({
       state: STATE_LIST.ERROR,
       errorMsg: 'An Unexpected Error Occurred, please visit again later.'

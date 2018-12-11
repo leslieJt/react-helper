@@ -1,10 +1,8 @@
-import reduceReducers from 'reduce-reducers';
-import { combineReducers } from 'redux';
 import {
   updateSaga
 } from '../actions';
 import enhanceReducer from '../reducer-decorate';
-import { registeredReducers } from '../reducers';
+import { decorateReducers } from '../reducers';
 
 import { getStore } from '../inj-dispatch';
 
@@ -17,7 +15,7 @@ function asyncPageCallback(module, page, reducers) {
   }
   if (reducer && !reducers[page]) {
     reducers[page] = enhanceReducer(reducer, page);
-    store.replaceReducer(reduceReducers(...registeredReducers, combineReducers(reducers)));
+    store.replaceReducer(decorateReducers(reducers));
   }
   return view;
 }

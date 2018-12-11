@@ -1,4 +1,4 @@
-import registerReducer, { registeredReducers } from './register_reducer';
+import registerReducer, { decorateReducers } from './register_reducer';
 import pageUpdatedReducer from './page_updated_reducer';
 import {
   cleanPageReducer,
@@ -8,8 +8,8 @@ import {
 
 export {
   registerReducer,
-  registeredReducers,
   pageUpdatedReducer,
+  decorateReducers,
   cleanStore,
   cleanPageReducer,
   registerCleanPageReducer,
