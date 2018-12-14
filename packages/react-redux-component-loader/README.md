@@ -14,11 +14,11 @@
 ## 约定
 
 #### 基本约定
-- 每个有view.jsx的文件夹都对应一个页面
-- 每个页面都需有`view.jsx`,`reducer.js`, `saga.js` 这三个文件，分别对应于视图入口、model、异步操作
+- 每个有me.json的文件夹都对应一个页面
+- 每个页面文件夹都需有`view.jsx`，以及可选的`${reducerName}.js`, `saga.js` 这三个文件，分别对应于视图入口、model、异步操作
 - 除了loader配置中`externals`选项中出现的页面，所有页面均需要`me.json`文件
 - 如果最后一级的文件夹名为`/list`, 那么将拥有两个路由，为`${prefix}`以及`${prefix}/list[${args}]`, 如果list页面需要参数必须使用完整链接
-- 如果一个文件夹不存在`view.jsx`，则该文件夹会被当作公共组件文件夹，其中的所有`*.jsx`都将被包含入`app.bundle.js`中
+- 如果一个文件夹不存在`me.json`，则该文件夹会被当作公共组件文件夹，其中的所有`*.jsx`都将被包含入`app.bundle.js`中
 
 #### `me.json`配置
 ````js
