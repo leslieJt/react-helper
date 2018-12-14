@@ -25,7 +25,7 @@ class Pager extends Component {
     super(props);
 
     // eslint-disable-next-line prefer-const
-    let { page, loader } = props;
+    let { props: { location, match }, args: { page, loader, retain } } = props;
     this.useTime = Date.now();
     setLeaveStartTime(this.useTime);
     setPage(page);
@@ -39,7 +39,6 @@ class Pager extends Component {
     }
     loader.then((view) => {
       const store = getStore();
-      const { location, match, retain } = props;
       // Component loaded, then dispatch.
       store.dispatch({
         type: updatePage,
@@ -68,7 +67,7 @@ class Pager extends Component {
   }
 
   componentDidMount() {
-    const { page } = this.props;
+    const { args: { page } } = this.props;
     const { state } = this.state;
 
     if (state === STATE_LIST.RESOLVED && !this.didSend) {
@@ -96,7 +95,7 @@ class Pager extends Component {
   }
 
   componentDidUpdate() {
-    const { page } = this.props;
+    const { args: { page } } = this.props;
     const { state } = this.state;
 
     if (!this.didSend && state === STATE_LIST.RESOLVED) {
@@ -146,22 +145,22 @@ class Pager extends Component {
   }
 
   render() {
-    const { loading: Loading } = this.props;
+    const { args: { loading: Loading }, props } = this.props;
     const { Result, errorMsg, state } = this.state;
 
     switch (state) {
       case STATE_LIST.RESOLVED:
-        return <Result {...this.props} />;
+        return <Result {...props} />;
       case STATE_LIST.ERROR:
         return <div>{errorMsg}</div>;
       default:
-        return <Loading {...this.props} />;
+        return <Loading {...props} />;
     }
   }
 }
 
 function Loadable(args) {
-  const wrapPager = props => <Pager {...props} {...args} />;
+  const wrapPager = props => <Pager props={props} args={args} />;
 
   wrapPager.displayName = `Loadable(${args.page})`;
 
