@@ -1,6 +1,6 @@
 import produce, { setAutoFreeze } from 'immer';
 import { sendError } from 'sheinq';
-import theAction, { editInSaga } from './actions';
+import theAction, { editInSaga, setValue } from './actions';
 import {
   setValKeyPath,
 } from './util/obj_key_path_ops';
@@ -13,6 +13,7 @@ function builtinReducer(state, action, page) {
     case theAction:
       return setValKeyPath(state, action.key.split('.'), action.value);
     case editInSaga:
+    case setValue:
       return produce(state, (draft) => {
         try {
           return action.fn(draft, action);

@@ -1,16 +1,40 @@
 import { put } from 'redux-saga/effects';
 
 import { getStore } from '../inj-dispatch';
+import isGeneratorFunction from '../sagas/is-generator';
+import { setValue } from '../actions';
+import isPlainObject, { isPrimitive } from './isPlainObject';
+import { setValKeyPathMute } from './obj_key_path_ops';
 
-function isGenerator(obj) {
-  return typeof obj.next === 'function' && typeof obj.throw === 'function';
-}
+function addSetMethod(result, page) {
+  result.set = function setValueByRRCLoaders(key, value, description) {
+    let val;
+    if (typeof key === 'string') {
+      val = { [key]: value };
+    } else if (isPlainObject(key)) {
+      val = key;
+      description = value;
+    }
 
-function isGeneratorFunction(obj) {
-  const { constructor } = obj;
-  if (!constructor) return false;
-  if (constructor.name === 'GeneratorFunction' || constructor.displayName === 'GeneratorFunction') return true;
-  return isGenerator(constructor.prototype);
+    Object.keys(val).forEach((k) => {
+      if (!isPrimitive(val[k])) {
+        throw new Error(
+          `value must be a primitive value, but [${k}]: ${JSON.stringify(val[k])} given, you may need move your logic to reducer!`
+        );
+      }
+    });
+
+    getStore((store) => {
+      store.dispatch({
+        type: setValue,
+        page,
+        fn: function set(draft) {
+          Object.keys(val).forEach(k => setValKeyPathMute(draft, k.split('.'), val[k]));
+        },
+        description: description || 'set value by builtin `set` method'
+      });
+    });
+  };
 }
 
 export default function (obj, page) {
@@ -48,6 +72,10 @@ export default function (obj, page) {
       mapping[`${page}/${key}`] = originalObject[key];
       mapping[`${page}/${key.replace(/^\$/, '')}`] = originalObject[key];
     }
+  }
+  if (!result.set) {
+    // mutate result
+    addSetMethod(result, page);
   }
   result['.__inner__'] = {
     originalObject,
