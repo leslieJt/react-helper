@@ -1,6 +1,6 @@
 {
   "name": "react-redux-component-loader",
-  "version": "6.1.0-alpha.3",
+  "version": "6.1.0-alpha.4",
   "description": "as title",
   "main": "index.js",
   "files": [
@@ -30,6 +30,6 @@
     "rrc-loader-helper": "^6.0.0"
   },
   "devDependencies": {
-    "rrc-loader-helper": "^6.1.0-alpha.3"
+    "rrc-loader-helper": "^6.1.0-alpha.4"
   }
 }
