@@ -42,7 +42,8 @@
     "ava": "^0.25.0",
     "prop-types": "^15.6.2",
     "redux": "^4.0.1",
-    "redux-saga": "^0.16.2"
+    "redux-saga": "^0.16.2",
+    "react": "^16.7.0"
   },
   "peerDependencies": {
     "react": ">=15",

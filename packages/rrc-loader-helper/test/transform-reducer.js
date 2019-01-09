@@ -17,17 +17,14 @@ test('#transform reducer', (t) => {
   };
   const result = transformReducer(raw, page);
   const expected = {
-    defaultState: result.defaultState,
     hello: result.hello,
     zz: result.zz,
     '.__inner__': {
       originalObject: raw,
       mapping: Object.assign(Object.create(raw), {
-        [`${page}/defaultState`]: raw.defaultState,
         [`${page}/hello`]: raw.hello,
       }),
     }
   };
-
   t.deepEqual(result, expected);
 });
