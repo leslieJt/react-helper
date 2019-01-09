@@ -32,6 +32,7 @@ function builtinReducer(state, action, page) {
 
 export default function decorateFn(fn, page) {
   if (typeof fn !== 'function' && typeof fn === 'object') {
+    const rawFn = fn;
     if (Object.hasOwnProperty.call(fn, '.__inner__')) {
       fn = fn['.__inner__'].mapping;
     }
@@ -49,7 +50,7 @@ export default function decorateFn(fn, page) {
      * reducer 为对象的时候包装为immer处理方式
      * 对象内 defaultState 为必须属性
      */
-    return (state = fn.defaultState, action) => {
+    const generatedReducer = function generatedReducer(state = fn.defaultState, action) {
       const builtinState = builtinReducer(state, action, page);
       if (builtinState) return builtinState;
       if (Object.hasOwnProperty.call(fn, action.type) && typeof fn[action.type] === 'function') {
@@ -68,6 +69,8 @@ export default function decorateFn(fn, page) {
       }
       return state;
     };
+    generatedReducer['.__inner__'] = rawFn['.__inner__'];
+    return generatedReducer;
   }
   return (state, action) => {
     const builtinState = builtinReducer(state, action, page);

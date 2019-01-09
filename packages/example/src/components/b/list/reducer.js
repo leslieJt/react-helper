@@ -11,6 +11,7 @@ const defaultState = {
     t1: 0,
   },
   test2: [],
+  outBound: {},
 };
 
 function sleep(n) {
@@ -27,12 +28,17 @@ export default {
     yield simpleBind(Promise.resolve(1), 'test.t1');
     yield any([Promise.resolve(2), Promise.all([sleep(1000), Promise.resolve(3)])], function* (pro, index) {
       const result = yield pro;
-      yield put(draft => { draft.test2[index] = result; });
+      yield put((draft) => { draft.test2[index] = result; });
     });
     yield put((state) => {
       state.loading = true;
     });
     yield sleep(2 * 1000);
+    try {
+      yield Promise.reject(-1);
+    } catch (e) {
+      console.log(e, 'eeeedasdsadas');
+    }
     yield put((state) => {
       state.loading = false;
     });

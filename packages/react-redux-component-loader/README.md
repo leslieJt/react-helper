@@ -51,7 +51,7 @@
 
 - [webpack.conf](example/webpack.config.js): 如果需要提高性能，可以用externals大法，可以启用`babel-loader`的`cacheDirectory`功能，也可以使用happyPack
 - [babel配置](example/.babelrc)
-- [入口文件](example/src/entry.jsx)
+- [入口文件](example/src/app.jsx)
 - [路由文件](example/src/components/root.jsx)
 - [model及异步整合](example/src/components/index.js)
 

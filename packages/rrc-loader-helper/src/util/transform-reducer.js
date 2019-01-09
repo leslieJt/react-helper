@@ -2,6 +2,8 @@ import { put } from 'redux-saga/effects';
 
 import { getStore } from '../inj-dispatch';
 
+const maskKeys = ['defaultState', '$out'];
+
 function isGenerator(obj) {
   return typeof obj.next === 'function' && typeof obj.throw === 'function';
 }
@@ -18,7 +20,7 @@ export default function (obj, page) {
     throw new Error('Your reducer must be an object, if you wanna use MobX style!');
   }
   const originalObject = obj;
-  const keys = Object.keys(originalObject);
+  const keys = Object.keys(originalObject).filter(x => maskKeys.indexOf(x) === -1);
   const result = {};
   const mapping = Object.create(originalObject);
   for (let i = 0; i < keys.length; i += 1) {

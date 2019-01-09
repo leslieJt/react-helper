@@ -4,7 +4,7 @@ import {
   getCachedFunction,
 } from './util';
 import {
-  get as getCurrentPage,
+  CurrentPageContext,
 } from './current-page';
 import { getStore } from './inj-dispatch';
 
@@ -23,16 +23,17 @@ React.createElement = function createElement(type, config, ...children) {
     if (val) {
       const store = getStore();
       if (store) {
-        const page = getCurrentPage();
-        const currentState = store.getState()[page];
-        if (currentState) {
-          config.value = getMappingVal(currentState, val.split('.'), mapping);
-          config.onChange = getCachedFunction(page, val, mapping, disallow, config.onChange);
-        }
+        // clear builtin props
+        builtins.forEach(prop => delete config[prop]);
+        return raw(CurrentPageContext.Consumer, {}, (page) => {
+          const currentState = store.getState()[page];
+          if (currentState) {
+            config.value = getMappingVal(currentState, val.split('.'), mapping);
+            config.onChange = getCachedFunction(page, val, mapping, disallow, config.onChange);
+          }
+          return raw(type, config, ...children);
+        });
       }
-
-      // clear builtin props
-      builtins.forEach(prop => delete config[prop]);
     }
   }
 

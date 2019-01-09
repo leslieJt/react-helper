@@ -6,9 +6,10 @@ import {
   sendPv, sendLeave, setLeaveStartTime, sendError
 } from 'sheinq';
 
-import { set as setPage } from './current-page';
+import { set as setPage, CurrentPageContext } from './current-page';
 import { getStore } from './inj-dispatch';
 import { updatePage } from './actions';
+import { registerPage } from './page-list';
 
 const historyList = [];
 let firstScreen = true;
@@ -44,7 +45,10 @@ class Pager extends Component {
       store.dispatch({
         type: updatePage,
         payload: {
-          page, location, match, retain
+          page,
+          location,
+          match,
+          retain
         }
       });
 
@@ -55,16 +59,17 @@ class Pager extends Component {
         });
       }
       return view;
-    }).catch((error) => {
-      console.error(error);
+    })
+      .catch((error) => {
+        console.error(error);
 
-      if (this.active) {
-        this.setState({
-          state: STATE_LIST.ERROR,
-          errorMsg: `Page load failed with error: ${error}`
-        });
-      }
-    });
+        if (this.active) {
+          this.setState({
+            state: STATE_LIST.ERROR,
+            errorMsg: `Page load failed with error: ${error}`
+          });
+        }
+      });
   }
 
   componentDidMount() {
@@ -141,7 +146,7 @@ class Pager extends Component {
 
     this.setState({
       state: STATE_LIST.ERROR,
-      errorMsg: 'An Unexpected Error Occurred, please visit again later.'
+      errorMsg: `An Unexpected Error Occurred, please visit again later. \n\n Error:\n ${error} \n\n Info: \n${info}`,
     });
   }
 
@@ -151,21 +156,27 @@ class Pager extends Component {
 
     switch (state) {
       case STATE_LIST.RESOLVED:
-        return <Result {...this.props} />;
+        return (
+          <Result {...this.props} />
+        );
       case STATE_LIST.ERROR:
-        return <div>{errorMsg}</div>;
+        return <pre>{errorMsg}</pre>;
       default:
         return <Loading {...this.props} />;
     }
   }
 }
 
-function Loadable(args) {
-  const wrapPager = props => <Pager {...props} {...args} />;
-
+function loadableFactory(args) {
+  const wrapPager = props => (
+    <CurrentPageContext.Provider value={args.page}>
+      <Pager {...props} {...args} />
+    </CurrentPageContext.Provider>
+  );
   wrapPager.displayName = `Loadable(${args.page})`;
+  registerPage(args.page, wrapPager);
 
   return wrapPager;
 }
 
-export default Loadable;
+export default loadableFactory;

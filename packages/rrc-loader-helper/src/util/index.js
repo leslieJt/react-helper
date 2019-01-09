@@ -1,7 +1,7 @@
 import {
   mappingVal,
 } from './mapping';
-import { getValKeyPath }from './obj_key_path_ops';
+import { getValKeyPath } from './obj_key_path_ops';
 
 export function getMappingVal(obj, keyPath, mapping) {
   const rawRes = getValKeyPath(obj, keyPath);
@@ -11,4 +11,4 @@ export function getMappingVal(obj, keyPath, mapping) {
   return rawRes;
 }
 
-export getCachedFunction  from './cached_function';
+export { default as getCachedFunction } from './cached_function';

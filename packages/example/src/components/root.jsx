@@ -7,8 +7,8 @@ import { ConnectedRouter } from 'react-router-redux';
 import { Route, Switch } from 'react-router-dom';
 import injectStore from 'rrc-loader-helper/lib/inj-dispatch';
 
-import Nav from './nav/view.jsx';
-import Login from './login/view.jsx';
+import Nav from './nav/view';
+import Login from './login/view';
 
 // alert!! for loader
 import Loading from './common/loading.jsx';

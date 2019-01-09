@@ -6,7 +6,7 @@ import { decorateReducers } from '../reducers';
 
 import { getStore } from '../inj-dispatch';
 
-// @TODO is is ok?
+// @TODO is it ok?
 function asyncPageCallback(module, page, reducers) {
   const { view, reducer, saga } = module;
   const store = getStore();

@@ -1,8 +1,14 @@
 /**
  * Created by fed on 2017/8/24.
  */
-const defaultState = {};
+const defaultState = {
+  zzzz: 90
+};
 
-export default function (state = defaultState) {
-  return state;
+export default {
+  defaultState,
+  $out(state) {
+    console.log(state);
+    return 1;
+  }
 }

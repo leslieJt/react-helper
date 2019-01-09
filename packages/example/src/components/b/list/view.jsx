@@ -3,25 +3,39 @@
  */
 import React from 'react';
 import { connect } from 'react-redux';
+import {
+  getEmbedPage,
+} from 'rrc-loader-helper/lib';
 
 import store from './reducer';
 
 const mapStateToProps = state => state['b/list'];
-const comp = props => (
-  <div>
-我是
-    {props.name}
-啊!
+const comp = props => {
+  const [Embed, getRes] = getEmbedPage("c");
+  return (
     <div>
-      <input type="text" data-bind="name" />
-      <button onClick={() => store.zz({})}>
-      Hello, 你在做什么
-      </button>
-      {
-      props.loading ? '加载中' : '已完成'
-    }
+      我是
+      {props.name}
+      啊!
+      <div>
+        <input type="text" data-bind="name" />
+        <button onClick={() => store.zz({})}>
+          Hello, 你在做什么
+        </button>
+        {
+          props.loading ? '加载中' : '已完成'
+        }
+      </div>
+      <div>
+        <div onClick={() => console.log(getRes())}>
+          child page
+        </div>
+        <div>
+          <Embed args={{ ab: 1 }} />
+        </div>
+      </div>
     </div>
-  </div>
-);
+  )
+};
 
 export default connect(mapStateToProps)(comp);

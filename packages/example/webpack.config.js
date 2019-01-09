@@ -3,11 +3,11 @@
  */
 const path = require('path');
 
-
+const typesBabelPlugin = require('react-redux-component-loader/lib/babel-plugin-action-name-init');
 
 module.exports = {
   entry: {
-    app: ['babel-polyfill', './src/entry.jsx'],
+    app: './src/app.jsx',
   },
   output: {
     path: path.join(__dirname, 'dist'),
@@ -15,7 +15,6 @@ module.exports = {
     chunkFilename: '[name].[chunkhash].chunk.js',
     publicPath: 'dist/',
   },
-  watch: true,
   devtool: 'inline-sourcemap',
   resolve: {
     alias: {
@@ -47,7 +46,7 @@ module.exports = {
             presets: [['@babel/env', {
               modules: false,
             }]],
-            plugins: [require('react-redux-component-loader/lib/babel-plugin-action-name-init')],
+            plugins: [typesBabelPlugin],
           },
         }, {
           loader: 'react-redux-component-loader',
@@ -69,5 +68,10 @@ module.exports = {
         exclude: /node_modules/,
       },
     ],
+  },
+  mode: 'development',
+  devServer: {
+    port: 8181,
+    contentBase: __dirname,
   },
 };

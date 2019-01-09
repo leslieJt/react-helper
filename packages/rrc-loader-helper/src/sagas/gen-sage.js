@@ -1,7 +1,9 @@
 /**
  * cpopy https://github.com/tj/co/blob/717b043371ba057cb7a4a2a4e47120d598116ed7/index.js#L210
  */
-import { takeLatest, put, fork, call } from 'redux-saga/effects';
+import {
+  takeLatest, put, fork, call
+} from 'redux-saga/effects';
 
 import isGeneratorFunction from './is-generator';
 import { editInSaga } from '../actions';

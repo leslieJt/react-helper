@@ -1,3 +1,4 @@
+import 'babel-polyfill';
 import React from 'react';
 import {
   createStore, applyMiddleware, combineReducers, compose,
@@ -19,6 +20,8 @@ const store = createStore(
   compose(
     applyMiddleware(sagaMiddleware),
     applyMiddleware(routerMiddleware(history)),
+    // redux devtools requires
+    // eslint-disable-next-line
     window.__REDUX_DEVTOOLS_EXTENSION__ ? window.__REDUX_DEVTOOLS_EXTENSION__() : f => f,
   ),
 );

@@ -58,6 +58,7 @@ exports.component = function (components, config, ctx) {
   importHelper.addDependencies('redux', '{ combineReducers }');
   importHelper.addDependencies('rrc-loader-helper/lib/loadable', 'Loadable');
   importHelper.addDependencies('rrc-loader-helper/lib/page-loader/async', 'asyncPageCallback');
+  importHelper.addDependencies('rrc-loader-helper/lib/imp', '{ setReducers }');
 
   let resultStr = '';
   const currentPath = ['.'];
@@ -99,7 +100,7 @@ exports.component = function (components, config, ctx) {
       }
     }
   }, () => currentPath.pop());
-  return [`${resultStr}\n`, importHelper.toImportList()];
+  return [`${resultStr}\n`, `${importHelper.toImportList()};\n setReducers(reducers);\n`];
 };
 
 exports.reducers = function (components, config, ctx) {
