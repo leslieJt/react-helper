@@ -1,4 +1,4 @@
-import React from 'react';
+import createReactContext from 'create-react-context';
 
 let currentPage;
 const callbacks = [];
@@ -18,4 +18,4 @@ export function setCallback(fn) {
   callbacks.push(fn);
 }
 
-export const CurrentPageContext = React.createContext('');
+export const CurrentPageContext = createReactContext('');
