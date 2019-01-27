@@ -151,18 +151,20 @@ class Pager extends Component {
   }
 
   render() {
-    const { loading: Loading } = this.props;
+    const {
+      loading: Loading, page, loader, ...restProps
+    } = this.props;
     const { Result, errorMsg, state } = this.state;
 
     switch (state) {
       case STATE_LIST.RESOLVED:
         return (
-          <Result {...this.props} />
+          <Result {...restProps} />
         );
       case STATE_LIST.ERROR:
         return <pre>{errorMsg}</pre>;
       default:
-        return <Loading {...this.props} />;
+        return <Loading {...restProps} />;
     }
   }
 }
