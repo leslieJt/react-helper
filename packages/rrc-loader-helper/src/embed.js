@@ -18,8 +18,8 @@ const EmbedCacheMap = new Map();
 
 
 function embedPageFactory(story, defaultOut) {
-  const Pager = getPage(story);
-  if (!Pager) {
+  const WrapPager = getPage(story);
+  if (!WrapPager) {
     console.error(`The story (${story}) you pass is not existed!`);
     return () => (
       <div>
@@ -35,12 +35,10 @@ function embedPageFactory(story, defaultOut) {
     render() {
       const { args } = this.props;
       return (
-        <CurrentPageContext.Provider value={story}>
-          <Pager
-            key={JSON.stringify(args)}
-            storyArg={args}
-          />
-        </CurrentPageContext.Provider>
+        <WrapPager
+          key={JSON.stringify(args)}
+          storyArg={args}
+        />
       );
     }
   }

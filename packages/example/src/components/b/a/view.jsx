@@ -3,9 +3,8 @@
  */
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { connect } from 'react-redux';
 
-export default connect(state => state['b/a'])(({ loading }) => (
+export default ({ loading }) => (
   <div>
   我是b.a.ab.bd!
     <input type="text" data-bind="k" />
@@ -19,4 +18,4 @@ export default connect(state => state['b/a'])(({ loading }) => (
     click me!
     </button>
   </div>
-));
+);

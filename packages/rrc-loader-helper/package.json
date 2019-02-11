@@ -43,12 +43,14 @@
     "ava": "^0.25.0",
     "prop-types": "^15.6.2",
     "react": "^16.7.0",
+    "react-redux": "^5.1.1",
     "redux": "^4.0.1",
     "redux-saga": "^0.16.2"
   },
   "peerDependencies": {
     "prop-types": ">=15",
     "react": ">=15",
+    "react-redux": ">=4",
     "redux": "4",
     "redux-saga": "1",
     "sheinq": "^1.1.19"

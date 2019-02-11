@@ -2,6 +2,7 @@
  * Created by fed on 2017/8/31.
  */
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import {
   sendPv, sendLeave, setLeaveStartTime, sendError
 } from 'sheinq';
@@ -13,6 +14,7 @@ import { registerPage } from './page-list';
 
 const historyList = [];
 let firstScreen = true;
+const connectRex = /^Connect\(\S+\)$/;
 
 const STATE_LIST = {
   INIT: 0,
@@ -53,9 +55,17 @@ class Pager extends Component {
       });
 
       if (this.active) {
+        let Result = view.default || view;
+        const mapStateToProps = state => state[page];
+
+        // react-redux connected Component test.
+        if (!connectRex.test(Result.displayName)) {
+          Result = connect(mapStateToProps)(Result);
+        }
+
         this.setState({
           state: STATE_LIST.RESOLVED,
-          Result: view.default || view
+          Result
         });
       }
       return view;

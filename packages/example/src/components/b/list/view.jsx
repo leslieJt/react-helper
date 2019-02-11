@@ -2,14 +2,12 @@
  * Created by fed on 2017/8/24.
  */
 import React from 'react';
-import { connect } from 'react-redux';
 import {
   getEmbedPage,
 } from 'rrc-loader-helper/lib';
 
 import store from './reducer';
 
-const mapStateToProps = state => state['b/list'];
 const comp = props => {
   const [Embed, getRes] = getEmbedPage("c");
   return (
@@ -38,4 +36,4 @@ const comp = props => {
   )
 };
 
-export default connect(mapStateToProps)(comp);
+export default comp;
