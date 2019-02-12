@@ -26,15 +26,15 @@
     "react": "^16.6.3",
     "react-dom": "^16.6.3",
     "react-redux": "^5.1.1",
-    "react-redux-component-loader": "^6.1.0-alpha.7",
+    "react-redux-component-loader": "^6.1.0-alpha.8",
     "react-router": "^4.3.1",
     "react-router-dom": "^4.3.1",
     "react-router-redux": "^5.0.0-alpha.8",
     "redux": "^4.0.1",
     "redux-saga": "^0.16.2",
-    "rrc-loader-helper": "^6.1.0-alpha.7",
+    "rrc-loader-helper": "^6.1.0-alpha.8",
     "sheinq": "^1.1.21",
     "whatwg-fetch": "^3.0.0"
   },
-  "version": "6.1.0-alpha.7"
+  "version": "6.1.0-alpha.8"
 }
