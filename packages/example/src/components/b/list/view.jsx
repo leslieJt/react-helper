@@ -9,6 +9,7 @@ import {
 import store from './reducer';
 
 const comp = props => {
+  console.log(props)
   const [Embed, getRes] = getEmbedPage("c");
   return (
     <div>

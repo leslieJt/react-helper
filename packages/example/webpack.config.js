@@ -34,6 +34,7 @@ module.exports = {
             lazy: true,
             loading: 'Loading',
             reducerDecorator: 'reducerDecorator',
+            dangerousRoute: true,
           },
         }],
         exclude: /node_modules/,

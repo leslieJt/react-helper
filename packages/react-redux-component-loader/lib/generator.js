@@ -93,7 +93,8 @@ exports.component = function (components, config, ctx) {
            + `new Promise(resolve => require.ensure([${comp}], require => resolve(require(${comp})),${JSON.stringify(compName)})).then(module => asyncPageCallback(module, "${reducerKey}", reducers))})`;
         }
         if (key === config.index) {
-          resultStr += `<Route exact path="/${currentPath.slice(1, -1).join('/')}" component={${component}} /> \n`;
+          const routeArg = config.dangerousRoute && metaInfo.route;
+          resultStr += `<Route exact path="/${currentPath.slice(1, -1).join('/')}${routeArg || ''}" component={${component}} /> \n`;
         }
         resultStr += `<Route path="/${currentPath.slice(1).join('/')}${metaInfo.route || ''}" `
           + `component={ ${component} }/>\n`;

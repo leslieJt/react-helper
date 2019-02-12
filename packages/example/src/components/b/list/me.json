@@ -1,5 +1,6 @@
 {
   "description": "",
   "crumb": [],
-  "mobx": true
+  "mobx": true,
+  "route": "/:id?"
 }

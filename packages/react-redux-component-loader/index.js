@@ -53,6 +53,7 @@ module.exports = function rrcLoader(request) {
     reducerName,
     reducerDecorator: '',
     retain: false,
+    dangerousRoute: false,
   }, query);
   const items = ['reducers', 'saga', 'component'].filter(value => request.indexOf(config[value]) > -1);
   if (items.length > 0) {
