@@ -73,7 +73,7 @@ export default function genSagas(obj, page, ctx) {
               if (added.length) {
                 yield newPutFn((state) => {
                   added.forEach((mark) => {
-                    state[mark] = 0;
+                    setValKeyPathMute(state, mark.split('.'), 0);
                   });
                 }, 'change some flags to loading');
               }
@@ -105,7 +105,7 @@ export default function genSagas(obj, page, ctx) {
             if (markings.length) {
               yield newPutFn((state) => {
                 markings.forEach((mark) => {
-                  state[mark] = 1;
+                  setValKeyPathMute(state, mark.split('.'), 1);
                 });
               }, 'change some flags to done');
             }
@@ -113,7 +113,7 @@ export default function genSagas(obj, page, ctx) {
             if (markings.length) {
               yield newPutFn((state) => {
                 markings.forEach((mark) => {
-                  state[mark] = 2;
+                  setValKeyPathMute(state, mark.split('.'), 2);
                 });
               }, 'change some flags to error');
             }
