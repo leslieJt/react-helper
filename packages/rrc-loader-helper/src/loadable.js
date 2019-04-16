@@ -31,7 +31,7 @@ const STATE_LIST = {
 function setPageStore(url, state) {
   const store = getStore();
   const {
-    retain, page, saga, sagaCache, route,
+    retain, page, saga, sagaCache, route, mobxStyle,
   } = state;
   if (saga) {
     let realSaga = saga;
@@ -51,6 +51,7 @@ function setPageStore(url, state) {
       type: updateSaga,
       ctx: setCtx({
         page,
+        mobxStyle,
       }),
       saga: realSaga,
     });
@@ -74,7 +75,9 @@ class Pager extends Component {
   constructor(props) {
     super(props);
     let { loader } = props;
-    const { retain, page, route } = props;
+    const {
+      retain, page, route, mobxStyle,
+    } = props;
     this.useTime = Date.now();
     setLeaveStartTime(this.useTime);
     setPage(page);
@@ -83,6 +86,7 @@ class Pager extends Component {
       retain,
       page,
       route,
+      mobxStyle,
       state: STATE_LIST.INIT,
       saga: null,
       sagaCache: new Map(),

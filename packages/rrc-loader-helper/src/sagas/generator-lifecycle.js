@@ -17,7 +17,7 @@ function popRunningStack() {
 export function addLifecycle(gen, {
   onAddStatus, onOk, onError, onYield
 }) {
-  return function* generatedFunction({ '@@INNER/DONE_MARK': doneMark, ...action }) {
+  return function* generatedFunction({ '@@INNER/DONE_MARK': doneMark, ...action } = {}) {
     let currentFrame = pushRunningStack();
     try {
       const it = gen(action);

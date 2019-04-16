@@ -6,10 +6,11 @@ import {
   url as urlKey, page as pageKey,
 } from './const';
 
-export function setCtx({ url, page }) {
+export function setCtx({ url, page, ...others }) {
   return setContext({
     [urlKey]: url,
     [pageKey]: page,
+    ...others,
   });
 }
 

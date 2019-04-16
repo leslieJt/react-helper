@@ -85,12 +85,12 @@ exports.component = function (components, config, ctx) {
         const retain = Object.prototype.hasOwnProperty.call(metaInfo, 'retain') ? metaInfo.retain : config.retain;
         if (metaInfo.sync) {
           const comp = JSON.stringify(`${currentPath.join('/')}/view.jsx`);
-          component = `Loadable({ route: ${JSON.stringify(metaInfo.route)}, retain: ${JSON.stringify(retain)}, page:${JSON.stringify(reducerKey)}, loading: Loading, loader: () =>`
+          component = `Loadable({ mobxStyle: ${JSON.stringify(metaInfo.mobx)}, route: ${JSON.stringify(metaInfo.route)}, retain: ${JSON.stringify(retain)}, page:${JSON.stringify(reducerKey)}, loading: Loading, loader: () =>`
             + ` new Promise(resolve => require.ensure([${comp}], require => resolve([require(${comp})]),${JSON.stringify(compName)}))`
             + ' })';
         } else {
           const comp = JSON.stringify(`${currentPath.join('/')}/me.json`);
-          component = `Loadable({ route: ${JSON.stringify(metaInfo.route)}, retain: ${JSON.stringify(retain)}, page:${JSON.stringify(reducerKey)},loading: Loading, loader: () => `
+          component = `Loadable({ mobxStyle: ${JSON.stringify(metaInfo.mobx)}, route: ${JSON.stringify(metaInfo.route)}, retain: ${JSON.stringify(retain)}, page:${JSON.stringify(reducerKey)},loading: Loading, loader: () => `
            + `new Promise(resolve => require.ensure([${comp}], require => resolve(require(${comp})),${JSON.stringify(compName)}))`
            + `.then(module => asyncPageCallback(module, "${reducerKey}", reducers, ${JSON.stringify(retain && metaInfo.route)}))})`;
         }

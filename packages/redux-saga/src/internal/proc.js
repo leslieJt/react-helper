@@ -350,7 +350,9 @@ export default function proc(
   }
 
   function runEffect(effect, parentEffectId, label = '', cb) {
-    effect = completeIOType(effect);
+    if (getContext('mobxStyle')) {
+      effect = completeIOType(effect);
+    }
 
     const effectId = nextEffectId()
     sagaMonitor && sagaMonitor.effectTriggered({ effectId, parentEffectId, label, effect })
