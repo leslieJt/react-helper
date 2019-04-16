@@ -1,23 +1,25 @@
-import {
-  updateSaga
-} from '../actions';
 import enhanceReducer from '../reducer-decorate';
 import { decorateReducers } from '../reducers';
 
 import { getStore } from '../inj-dispatch';
 
 // @TODO is it ok?
-function asyncPageCallback(module, page, reducers) {
+function asyncPageCallback(module, page, reducers, isolateReducer) {
   const { view, reducer, saga } = module;
   const store = getStore();
-  if (saga) {
-    store.dispatch({ type: updateSaga, saga });
-  }
   if (reducer && !reducers[page]) {
-    reducers[page] = enhanceReducer(reducer, page);
+    const enhancedReducer = enhanceReducer(reducer, page);
+    if (isolateReducer) {
+      Object.defineProperty(enhancedReducer, '.retain', {
+        writable: false,
+        value: true,
+        configurable: false,
+      });
+    }
+    reducers[page] = enhancedReducer;
     store.replaceReducer(decorateReducers(reducers));
   }
-  return view;
+  return [view, saga || reducer.saga];
 }
 
 export default asyncPageCallback;

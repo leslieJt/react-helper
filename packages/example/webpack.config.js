@@ -20,6 +20,7 @@ module.exports = {
     alias: {
       react: path.join(__dirname, 'node_modules', 'react'),
       sheinq: path.join(__dirname, 'node_modules', 'sheinq'),
+      'redux-saga': 'redux-saga',
     },
     extensions: ['.', '.js', '.jsx'],
   },
@@ -37,7 +38,14 @@ module.exports = {
             dangerousRoute: true,
           },
         }],
-        exclude: /node_modules/,
+        exclude: /node_modules|rrc-loader-helper/,
+      },
+      {
+        test: /\.css$/,
+        use: ['style-loader', 'css-loader'],
+      }, {
+        test: /\.less/,
+        use: ['style-loader', 'css-loader', 'less-loader'],
       },
       {
         test: /types\.js$/,

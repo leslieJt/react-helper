@@ -2,20 +2,32 @@
  * Created by fed on 2017/8/25.
  */
 import React from 'react';
-import { Link } from 'react-router-dom';
+import {
+  Menu,
+} from 'shineout';
 
 export default ({ children }) => (
-  <div>
-    zz导航
-    <div>
-      <Link to="/a"> a </Link>
-    </div>
-    <div>
-      <Link to="/b"> b </Link>
-    </div>
-    <div>
-      <Link to="/b/a"> ba </Link>
-    </div>
+  <div style={{ display: 'flex' }}>
+    <Menu
+      keygen="url"
+      data={[
+        {
+          url: '#/a',
+          title: 'Navigation One',
+        },
+        {
+          url: '#/b',
+          title: 'Navigation Two',
+        },
+        {
+          url: '#/b/a',
+          title: 'Navigation Two',
+        },
+      ]}
+      renderItem={d => <a href={d.url}>{d.title}</a>}
+      style={{ width: 160 }}
+      inlineIndent={24}
+    />
     {children || '啧啧啧'}
   </div>
 );

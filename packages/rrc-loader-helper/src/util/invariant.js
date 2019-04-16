@@ -1,4 +1,4 @@
-const NODE_ENV = process.env.NODE_ENV;
+const { NODE_ENV } = process.env;
 
 // similar to `https://github.com/zertosh/invariant`, but more simple.
 export default function invariant(condition, message) {

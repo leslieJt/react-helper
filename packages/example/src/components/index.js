@@ -16,17 +16,21 @@ export default assign({
 
 const runningSaga = [];
 
+// @TODO changelog
 function* waitingAwakeSaga(saga) {
+  let setCtx = null;
   while (!saga) {
     const action = yield take(UPDATE_SAGA);
     if (runningSaga.indexOf(action.saga) === -1) {
       runningSaga.push(action.saga);
       saga = action.saga;
+      setCtx = action.ctx;
       break;
     }
   }
   for (let i = 0; i < 100; i += 1) {
     try {
+      yield setCtx;
       yield call(saga);
     } catch (e) {
       console.error(e, 'this is err');

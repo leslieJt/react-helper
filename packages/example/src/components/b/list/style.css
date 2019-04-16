@@ -1,0 +1,8 @@
+.tabs {
+    display: flex;
+    width: 300px;
+}
+
+.tabs a {
+    flex: 1;
+}

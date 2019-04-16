@@ -6,9 +6,7 @@
         "modules": false
       }
     ],
-    "@babel/react"
-  ],
-  "plugins": [
-    "react-redux-component-loader/lib/babel-plugin-reducer-enhance"
+    "@babel/react",
+    "react-redux-component-loader/lib/preset"
   ]
 }

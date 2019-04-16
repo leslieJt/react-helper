@@ -1,0 +1,54 @@
+{
+  "name": "@vve/react-router",
+  "version": "6.2.0-alpha.0",
+  "description": "react router for react-helper & with keep-alive",
+  "main": "lib/index.js",
+  "files": [
+    "lib"
+  ],
+  "scripts": {
+    "test": "jest",
+    "build": "babel src --out-dir lib",
+    "preversion": "npm test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sheinsight/react-router.git"
+  },
+  "keywords": [
+    "javascript",
+    "react",
+    "router"
+  ],
+  "author": "renaesop <njurjs@gmail.com>",
+  "contributors": [
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/sheinsight/react-router/ssues"
+  },
+  "dependencies": {
+    "create-react-context": "^0.2.3",
+    "tiny-invariant": "^1.0.4",
+    "tiny-warning": "^1.0.2",
+    "path-to-regexp": "^3.0.0"
+  },
+  "devDependencies": {
+    "react": "^16.8.4",
+    "history": "^4.9.0"
+  },
+  "peerDependencies": {
+    "react": ">=16",
+    "prop-types": ">=15",
+    "react-dom": ">=16",
+    "history": ">=4"
+  },
+  "npmFileMap": [
+    {
+      "basePath": "/dist/",
+      "files": [
+        "*.js"
+      ]
+    }
+  ]
+}

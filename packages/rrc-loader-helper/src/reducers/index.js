@@ -6,6 +6,8 @@ import {
   registerCleanPageReducer,
 } from './clean_page_reducer';
 
+registerReducer(pageUpdatedReducer);
+
 export {
   registerReducer,
   pageUpdatedReducer,

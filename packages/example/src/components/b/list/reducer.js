@@ -1,7 +1,7 @@
 /**
  * Created by fed on 2017/8/24.
  */
-import { simpleBind, any } from 'rrc-loader-helper/lib/sagas';
+import { any, markStatus } from 'rrc-loader-helper/lib/sagas';
 
 const defaultState = {
   name: 'bbc/list',
@@ -15,32 +15,42 @@ const defaultState = {
 };
 
 function sleep(n) {
-  return new Promise(resolve => setTimeout(resolve, n));
+  return new Promise(resolve => setTimeout(() => resolve(n), n));
 }
 
 
 export default {
   defaultState,
-  hello: (state, action) => {
-    state.value = action.value;
+  $zz(payload) {
+    payload.loading = true;
   },
-  * zz(action, ctx, put) {
-    yield simpleBind(Promise.resolve(1), 'test.t1');
+  ko() {
+    console.log(123);
+  },
+  * abc() {
+    yield sleep(1000);
+    console.log('worker abc!');
+  },
+  * zz(action, ctx) {
+    markStatus('kkk');
+    const res = yield '';
+    console.log(res);
+
     yield any([Promise.resolve(2), Promise.all([sleep(1000), Promise.resolve(3)])], function* (pro, index) {
       const result = yield pro;
-      yield put((draft) => { draft.test2[index] = result; });
+      yield (draft) => { draft.test2[index] = result; };
     });
-    yield put((state) => {
-      state.loading = true;
-    });
-    yield sleep(2 * 1000);
+    const t = Date.now();
+    yield this.abc();
+    yield ctx.abc();
+    console.log('consume: ', Date.now() - t, 'ms')
     try {
       yield Promise.reject(-1);
     } catch (e) {
       console.log(e, 'eeeedasdsadas');
     }
-    yield put((state) => {
+    yield (state) => {
       state.loading = false;
-    });
+    };
   },
 };

@@ -40,6 +40,7 @@ module.exports = function rrcLoader(request) {
   if (query.bundle) {
     return generators.bundle(reducerName, ctx);
   }
+
   const config = assign({
     externals: [],
     dir: path.join(process.cwd(), 'src', componentDir),
@@ -52,8 +53,8 @@ module.exports = function rrcLoader(request) {
     reducerInject: 'reducers',
     reducerName,
     reducerDecorator: '',
-    retain: false,
     dangerousRoute: false,
+    retain: false,
   }, query);
   const items = ['reducers', 'saga', 'component'].filter(value => request.indexOf(config[value]) > -1);
   if (items.length > 0) {

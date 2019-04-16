@@ -62,6 +62,7 @@ typings/
 
 .npmrc
 /packages/rrc-loader-helper/lib
+/packages/react-router/lib
 lerna-debug.log
 
 dist/

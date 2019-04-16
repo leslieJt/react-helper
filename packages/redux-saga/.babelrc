@@ -1,0 +1,20 @@
+{
+  "presets": [["@babel/env", { "loose": true }], "@babel/react"],
+  "plugins": ["annotate-pure-calls",  ["@babel/plugin-proposal-decorators", { "legacy": true }],
+    "@babel/plugin-proposal-function-sent",
+    "@babel/plugin-proposal-export-namespace-from",
+    "@babel/plugin-proposal-numeric-separator",
+    "@babel/plugin-proposal-throw-expressions"
+  ],
+  "env": {
+    "es": {
+      "presets": [["@babel/env", { "loose": true, "modules": false }], "@babel/react"],
+      "plugins": ["annotate-pure-calls",  ["@babel/plugin-proposal-decorators", { "legacy": true }],
+        "@babel/plugin-proposal-function-sent",
+        "@babel/plugin-proposal-export-namespace-from",
+        "@babel/plugin-proposal-numeric-separator",
+        "@babel/plugin-proposal-throw-expressions"
+      ]
+    }
+  }
+}

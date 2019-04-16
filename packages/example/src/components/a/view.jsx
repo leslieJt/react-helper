@@ -2,7 +2,7 @@
  * Created by fed on 2017/8/24.
  */
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link } from 'rrc-loader-helper/router';
 
 export default () => (
   <div>

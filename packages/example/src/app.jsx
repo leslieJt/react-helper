@@ -1,28 +1,35 @@
 import 'babel-polyfill';
 import React from 'react';
 import {
-  createStore, applyMiddleware, combineReducers, compose,
+  createStore, applyMiddleware, compose,
 } from 'redux';
-import createSagaMiddleware from 'redux-saga';
+import {
+  combineReducers2,
+} from 'rrc-loader-helper';
+import createSagaMiddleware from 'rrc-loader-helper/saga';
 import { Provider } from 'react-redux';
 import { render } from 'react-dom';
 import { routerMiddleware } from 'react-router-redux';
+import 'shineout/dist/theme.default.css';
 
 import reducers, { rootSaga } from './components/index';
 import RootView from './components/root';
 
 import history from './lib/history';
 
+
 const sagaMiddleware = createSagaMiddleware();
 
 const store = createStore(
-  combineReducers(reducers),
+  combineReducers2(reducers),
   compose(
     applyMiddleware(sagaMiddleware),
     applyMiddleware(routerMiddleware(history)),
     // redux devtools requires
     // eslint-disable-next-line
-    window.__REDUX_DEVTOOLS_EXTENSION__ ? window.__REDUX_DEVTOOLS_EXTENSION__() : f => f,
+    window.__REDUX_DEVTOOLS_EXTENSION__ ? window.__REDUX_DEVTOOLS_EXTENSION__({
+      // actionsBlacklist: ['@@INNER'],
+    }) : f => f,
   ),
 );
 

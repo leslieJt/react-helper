@@ -1,20 +1,25 @@
 /**
  * Created by fed on 2017/8/31.
  */
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
+import React, { Component, Fragment } from 'react';
+import { polyfill } from 'react-lifecycles-compat';
+import {
+  call,
+} from '@vve/redux-saga/effects';
 import {
   sendPv, sendLeave, setLeaveStartTime, sendError
 } from 'sheinq';
 
 import { set as setPage, CurrentPageContext } from './current-page';
 import { getStore } from './inj-dispatch';
-import { updatePage } from './actions';
-import { registerPage } from './page-list';
+import { updatePage, updateSaga } from './actions';
+import { registerPage, getPage } from './page-list';
+import {
+  setCtx, connect,
+} from './retain';
 
 const historyList = [];
 let firstScreen = true;
-const connectRex = /^Connect\(\S+\)$/;
 
 const STATE_LIST = {
   INIT: 0,
@@ -23,52 +28,92 @@ const STATE_LIST = {
   PENDING: 3,
 };
 
+function setPageStore(url, state) {
+  const store = getStore();
+  const {
+    retain, page, saga, sagaCache, route,
+  } = state;
+  if (saga) {
+    let realSaga = saga;
+    if (retain && route) {
+      if (!sagaCache.has(url)) {
+        sagaCache.set(url, function* wrappedSaga() {
+          yield setCtx({
+            page,
+            url,
+          });
+          yield call(saga);
+        });
+      }
+      realSaga = sagaCache.get(url);
+    }
+    store.dispatch({
+      type: updateSaga,
+      ctx: setCtx({
+        page,
+      }),
+      saga: realSaga,
+    });
+  }
+
+  // Component loaded, then dispatch.
+  store.dispatch({
+    type: updatePage,
+    payload: {
+      page,
+      // location, what does it do?
+      match: { url },
+      // @TODO should refactor
+      retain: retain && route,
+    },
+  });
+}
+
+// @TODO may be buggy
 class Pager extends Component {
   constructor(props) {
     super(props);
-
-    // eslint-disable-next-line prefer-const
-    let { page, loader } = props;
+    let { loader } = props;
+    const { retain, page, route } = props;
     this.useTime = Date.now();
     setLeaveStartTime(this.useTime);
     setPage(page);
     this.active = true;
     this.state = {
-      state: STATE_LIST.INIT
+      retain,
+      page,
+      route,
+      state: STATE_LIST.INIT,
+      saga: null,
+      sagaCache: new Map(),
+      views: new Set(),
     };
 
     if (typeof loader === 'function') {
       loader = loader();
     }
-    loader.then((view) => {
-      const store = getStore();
-      const { location, match, retain } = props;
-      // Component loaded, then dispatch.
-      store.dispatch({
-        type: updatePage,
-        payload: {
-          page,
-          location,
-          match,
-          retain
-        }
-      });
+    loader.then(([view, saga]) => {
+      const { match: { url } } = props;
 
       if (this.active) {
-        let Result = view.default || view;
-        const mapStateToProps = state => state[page];
-
-        // react-redux connected Component test.
-        if (!connectRex.test(Result.displayName)) {
-          Result = connect(mapStateToProps)(Result);
+        let PageComponent = view.default || view;
+        if (!PageComponent.isConnectedComponent) {
+          PageComponent = connect(state => state[page])(PageComponent);
         }
-
-        this.setState({
+        const mutingState = {
           state: STATE_LIST.RESOLVED,
-          Result
-        });
+          PageComponent,
+          saga,
+          url,
+        };
+        const draftState = Object.assign({}, this.state, mutingState);
+        if (retain && route) {
+          // @TODO wrong !!
+          this.state.views.add(url);
+        }
+        setPageStore(url, draftState);
+        this.setState(mutingState);
       }
-      return view;
     })
       .catch((error) => {
         console.error(error);
@@ -76,10 +121,23 @@ class Pager extends Component {
         if (this.active) {
           this.setState({
             state: STATE_LIST.ERROR,
-            errorMsg: `Page load failed with error: ${error}`
+            errorMsg: `Page load failed with error: ${error}`,
           });
         }
       });
+  }
+
+  static getDerivedStateFromProps(nextProps, prevState) {
+    if (prevState.state !== STATE_LIST.RESOLVED) return null;
+    if (prevState.retain && prevState.route && prevState.url !== nextProps.match.url) {
+      const { url } = nextProps.match;
+      prevState.views.add(url);
+      setPageStore(url, prevState);
+      return {
+        url,
+      };
+    }
+    return null;
   }
 
   componentDidMount() {
@@ -94,7 +152,7 @@ class Pager extends Component {
           ctu: Date.now() - this.useTime - 4,
           page,
           refer: preHis || '',
-          firstScreen
+          firstScreen,
         });
         if (firstScreen) firstScreen = !firstScreen;
       }, 4);
@@ -160,17 +218,50 @@ class Pager extends Component {
     });
   }
 
+  renderPage(restProps) {
+    const {
+      url,
+      retain,
+      views,
+      PageComponent,
+      page,
+      route,
+    } = this.state;
+
+    if (!retain || !route) {
+      return (
+        <CurrentPageContext.Provider
+          value={{ page, retain: false, }}
+        >
+          <PageComponent {...restProps} rrcPageActive />
+        </CurrentPageContext.Provider>
+      );
+    }
+    return (
+      <Fragment>
+        {
+          [...views].map(u => (
+            <CurrentPageContext.Provider
+              key={u}
+              value={{ page, retain: retain && route, url: u, }}
+            >
+              <PageComponent {...restProps} rrcPageActive={u === url} />
+            </CurrentPageContext.Provider>
+          ))
+        }
+      </Fragment>
+    );
+  }
+
   render() {
     const {
-      loading: Loading, page, loader, ...restProps
+      loading: Loading, page, loader, retain, route, ...restProps
     } = this.props;
-    const { Result, errorMsg, state } = this.state;
+    const { errorMsg, state } = this.state;
 
     switch (state) {
       case STATE_LIST.RESOLVED:
-        return (
-          <Result {...restProps} />
-        );
+        return this.renderPage(restProps);
       case STATE_LIST.ERROR:
         return <pre>{errorMsg}</pre>;
       default:
@@ -179,16 +270,26 @@ class Pager extends Component {
   }
 }
 
-function loadableFactory(args) {
-  const wrapPager = props => (
-    <CurrentPageContext.Provider value={args.page}>
-      <Pager {...props} {...args} />
-    </CurrentPageContext.Provider>
-  );
-  wrapPager.displayName = `Loadable(${args.page})`;
-  registerPage(args.page, wrapPager);
+polyfill(Pager);
 
-  return wrapPager;
+
+function loadableFactory(args) {
+  if (!getPage(args.page)) {
+    let wrapPager = null;
+    if (!args.retain && args.route) {
+      wrapPager = props => (
+        <Pager key={props.match.url} {...props} {...args} />
+      );
+    } else {
+      wrapPager = props => (
+        <Pager {...props} {...args} />
+      );
+    }
+
+    wrapPager.displayName = `Loadable(${args.page})`;
+    registerPage(args.page, wrapPager);
+  }
+  return getPage(args.page);
 }
 
 export default loadableFactory;

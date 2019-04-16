@@ -3,8 +3,7 @@
  */
 import React from 'react';
 import PropTypes from 'prop-types';
-import { ConnectedRouter } from 'react-router-redux';
-import { Route, Switch } from 'react-router-dom';
+import { Router, Route, Switch } from 'rrc-loader-helper/router';
 import injectStore from 'rrc-loader-helper/lib/inj-dispatch';
 
 import Nav from './nav/view';
@@ -26,12 +25,12 @@ const NavWrapper = ({ match }) => (
 const Routes = ({ history, store: innerStore }) => {
   injectStore(innerStore);
   return (
-    <ConnectedRouter history={history}>
+    <Router history={history}>
       <Switch>
         <Route path="/login" component={Login} />
         <Route path="/" component={NavWrapper} />
       </Switch>
-    </ConnectedRouter>
+    </Router>
   );
 };
 
