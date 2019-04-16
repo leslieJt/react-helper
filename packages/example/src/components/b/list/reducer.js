@@ -24,9 +24,6 @@ export default {
   $zz(payload) {
     payload.loading = true;
   },
-  ko() {
-    console.log(123);
-  },
   * abc() {
     yield sleep(1000);
     console.log('worker abc!');
@@ -34,7 +31,6 @@ export default {
   * zz(action, ctx) {
     markStatus('kkk');
     const res = yield '';
-    console.log(res);
 
     yield any([Promise.resolve(2), Promise.all([sleep(1000), Promise.resolve(3)])], function* (pro, index) {
       const result = yield pro;
@@ -43,7 +39,6 @@ export default {
     const t = Date.now();
     yield this.abc();
     yield ctx.abc();
-    console.log('consume: ', Date.now() - t, 'ms')
     try {
       yield Promise.reject(-1);
     } catch (e) {

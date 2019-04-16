@@ -2,7 +2,6 @@ const currentPageContextName = 'RRC_LOADER_CURRENT_PAGE_CONTEXT';
 const consumerName = `${currentPageContextName}.Consumer`;
 const rawStoreVariable = 'temp_store_var__';
 const packageName = 'rrc-loader-helper';
-const storeName = 'reducer';
 const meDotJsonReg = /me\.json$/;
 
 module.exports = function BabelPluginStoreTransform(babel) {
@@ -15,6 +14,7 @@ module.exports = function BabelPluginStoreTransform(babel) {
     visitor: {
       Program(programPath, state) {
         if (meDotJsonReg.test(state.file.opts.filename)) return;
+        const storeName = state.opts.storeName || 'store';
         let shouldGen = false;
 
         programPath.traverse({

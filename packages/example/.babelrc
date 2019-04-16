@@ -7,6 +7,8 @@
       }
     ],
     "@babel/react",
-    "react-redux-component-loader/lib/preset"
+    ["react-redux-component-loader/lib/preset", {
+      "storeName": "reducer"
+    }]
   ]
 }
