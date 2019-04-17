@@ -30,8 +30,8 @@
   "homepage": "https://github.com/sheinsight/react-helper#readme",
   "dependencies": {
     "@babel/runtime": "^7.1.5",
-    "@vve/react-router": "^6.2.0-alpha.0",
-    "@vve/redux-saga": "^6.2.0-alpha.0",
+    "@vve/react-router": "^6.2.1-alpha.2",
+    "@vve/redux-saga": "^6.2.1-alpha.2",
     "create-react-context": "^0.2.3",
     "gud": "^1.0.0",
     "immer": "^1.7.4",
