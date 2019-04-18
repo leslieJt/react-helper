@@ -60,18 +60,15 @@ class Switch extends React.Component {
                         {ele}
                       </DeactivatableWrapper>
                     </div>
-                  ))
-              }
-              {
-                match
-                  ? (
-                    <div>
-                      <DeactivatableWrapper active key={element.props.path}>
-                        {React.cloneElement(element, { location, computedMatch: match })}
-                      </DeactivatableWrapper>
-                    </div>
-                  )
-                  : null
+                  )).concat([match
+                    ? (
+                      <div key={element.props.path}>
+                        <DeactivatableWrapper active>
+                          {React.cloneElement(element, { location, computedMatch: match })}
+                        </DeactivatableWrapper>
+                      </div>
+                    )
+                    : null])
               }
             </Fragment>
           );

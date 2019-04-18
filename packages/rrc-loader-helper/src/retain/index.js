@@ -10,7 +10,6 @@ import {
   page,
 } from './const';
 import retainHocReducer from './reducer';
-import Deactivatable from './deactivatable-wrapper';
 import connect from './connect';
 
 export {
@@ -19,7 +18,6 @@ export {
   getCtx,
   setCtx,
   retainHocReducer,
-  Deactivatable,
   connect,
   page,
 };

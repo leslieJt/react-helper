@@ -22,6 +22,7 @@ class Route extends React.Component {
       path,
       component,
       render,
+      keepAlive,
     } = this.props;
     return (
       <RouterContext.Consumer>
@@ -64,12 +65,18 @@ class Route extends React.Component {
 
           if (children && !isEmptyChildren(children)) {
             renderChildren = children;
-          } else if (props.match) {
+          } else if (props.match || (this.rendered && keepAlive)) {
+            props.match = props.match || this.memedMatch;
             if (component) {
               renderChildren = React.createElement(component, props);
             } else if (render) {
               renderChildren = render(props);
             }
+          }
+
+          if (renderChildren && keepAlive) {
+            this.rendered = true;
+            this.memedMatch = props.match;
           }
 
           return (
@@ -134,17 +141,17 @@ if (process.env.NODE_ENV !== 'production') {
     );
   };
 
-  Route.prototype.componentDidUpdate = function (prevProps) {
-    warning(
-      !(this.props.location && !prevProps.location),
-      '<Route> elements should not change from uncontrolled to controlled (or vice versa). You initially used no "location" prop and then provided one on a subsequent render.'
-    );
-
-    warning(
-      !(!this.props.location && prevProps.location),
-      '<Route> elements should not change from controlled to uncontrolled (or vice versa). You provided a "location" prop initially but omitted it on a subsequent render.'
-    );
-  };
+  // Route.prototype.componentDidUpdate = function (prevProps) {
+  //   warning(
+  //     !(this.props.location && !prevProps.location),
+  //     '<Route> elements should not change from uncontrolled to controlled (or vice versa). You initially used no "location" prop and then provided one on a subsequent render.'
+  //   );
+  //
+  //   warning(
+  //     !(!this.props.location && prevProps.location),
+  //     '<Route> elements should not change from controlled to uncontrolled (or vice versa). You provided a "location" prop initially but omitted it on a subsequent render.'
+  //   );
+  // };
 }
 
 export default Route;

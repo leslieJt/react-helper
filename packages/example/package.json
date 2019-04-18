@@ -38,7 +38,8 @@
     "redux-saga": "^0.16.2",
     "rrc-loader-helper": "^6.2.1-alpha.3",
     "sheinq": "^1.1.21",
-    "shineout": "^1.2.4",
+    "shineout": "^1.2.10",
+    "faker": "^4.1.0",
     "whatwg-fetch": "^3.0.0"
   },
   "version": "6.2.1-alpha.3"

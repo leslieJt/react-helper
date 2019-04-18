@@ -1,5 +1,4 @@
-const currentPageContextName = 'RRC_LOADER_CURRENT_PAGE_CONTEXT';
-const consumerName = `${currentPageContextName}.Consumer`;
+const currentPageContextName = 'RrcLoaderCurrentPageContext';
 const rawStoreVariable = 'temp_store_var__';
 const packageName = 'rrc-loader-helper';
 const meDotJsonReg = /me\.json$/;
@@ -40,18 +39,26 @@ module.exports = function BabelPluginStoreTransform(babel) {
 
             if (
               !path.findParent(p => p.isJSXElement())
-              && path.node.openingElement.name.name !== consumerName
+              && !(
+                t.isJSXMemberExpression(path.node.openingElement.name)
+                && path.node.openingElement.name.object.name === currentPageContextName
+              )
             ) {
               const fn = path.getFunctionParent();
               if (!fn.getFunctionParent() && !fn.isClassMethod()) {
-                const oldBody = fn.node.body.body;
+                let oldBody = fn.node.body;
+                if (t.isBlockStatement(oldBody)) {
+                  oldBody = oldBody.body;
+                } else {
+                  oldBody = [t.returnStatement(oldBody)];
+                }
                 const consumerFn = consumerFnTemp();
 
                 consumerFn.expression.body.body = [...consumerFn.expression.body.body, ...oldBody];
 
                 const newReturn = t.jsxElement(
-                  t.jSXOpeningElement(t.jsxIdentifier(consumerName), []),
-                  t.jSXClosingElement(t.jsxIdentifier(consumerName)),
+                  t.jSXOpeningElement(t.jsxMemberExpression(t.jsxIdentifier(currentPageContextName), t.jsxIdentifier('Consumer')), []),
+                  t.jSXClosingElement(t.jsxMemberExpression(t.jsxIdentifier(currentPageContextName), t.jsxIdentifier('Consumer'))),
                   [t.jSXExpressionContainer(consumerFn.expression)],
                   false,
                 );

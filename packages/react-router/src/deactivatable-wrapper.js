@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 export default class Deactivatable extends React.Component {
   shouldComponentUpdate(nextProps) {
-    return nextProps.active;
+    return this.props.active || nextProps.active;
   }
 
   render() {

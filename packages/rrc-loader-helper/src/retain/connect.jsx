@@ -7,7 +7,6 @@ import {
 import {
   CurrentPageContext,
 } from '../current-page';
-import Deactivatable from './deactivatable-wrapper';
 import {
   enhanceAction,
 } from './action';
@@ -20,19 +19,29 @@ export default function connect2(mapStateToProps, ...others) {
         <CurrentPageContext.Consumer>
           {
             ({ retain, url, page }) => {
-              function muteDispatch({ dispatch, otherParentProps: oProps, ...otherProps }) {
-                return (
-                  <PageComponent
-                    dispatch={action => dispatch(enhanceAction(action, {
-                      url,
-                      page,
-                    }))}
-                    {...oProps}
-                    {...otherProps}
-                  />
-                );
-              }
+              class muteDispatch extends React.Component {
+                shouldComponentUpdate(nextProps) {
+                  if (!this.props.rrcPageActive && nextProps.rrcPageActive) {
+                    setTimeout(() => this.setState({}), 1);
+                    return false;
+                  }
+                  return nextProps.rrcPageActive;
+                }
 
+                render() {
+                  const { dispatch, otherParentProps: oProps, ...otherProps } = this.props;
+                  return (
+                    <PageComponent
+                      dispatch={action => dispatch(enhanceAction(action, {
+                        url,
+                        page,
+                      }))}
+                      {...oProps}
+                      {...otherProps}
+                    />
+                  );
+                }
+              }
               muteDispatch.displayName = `muteDispatch(${url}})`;
               if (!PageComponent.caches.has(url)) {
                 if (!retain) {
@@ -56,10 +65,11 @@ export default function connect2(mapStateToProps, ...others) {
               if (retain) {
                 return (
                   <div style={{ display: active ? 'block' : 'none' }}>
-                    <Deactivatable active={active}>
-                      <ConnectedComponent otherParentProps={otherParentProps} />
-                    </Deactivatable>
-                  </div>
+                    <ConnectedComponent
+                      otherParentProps={otherParentProps}
+                      rrcPageActive={active}
+                    />
+                </div>
                 );
               }
               return <ConnectedComponent {...otherParentProps} />;

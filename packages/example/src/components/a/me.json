@@ -2,5 +2,5 @@
   "route": "/:id?",
   "description": "",
   "crumb": [],
-  "retain": true
+  "sync": true
 }

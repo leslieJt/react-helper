@@ -1,51 +1,29 @@
 /**
  * Created by fed on 2017/8/24.
  */
-import { any, markStatus } from 'rrc-loader-helper/lib/sagas';
+import { markStatus } from 'rrc-loader-helper/lib/sagas';
+
+import getData from './server';
 
 const defaultState = {
-  name: 'bbc/list',
-  value: 'kkk',
-  loading: true,
-  test: {
-    t1: 0,
-  },
-  test2: [],
-  outBound: {},
+  dataStatus: 1,
+  data: [],
+  getCateResult: undefined,
 };
-
-function sleep(n) {
-  return new Promise(resolve => setTimeout(() => resolve(n), n));
-}
-
 
 export default {
   defaultState,
-  $zz(payload) {
-    payload.loading = true;
-  },
-  * abc() {
-    yield sleep(1000);
-    console.log('worker abc!');
-  },
-  * zz(action, ctx) {
-    markStatus('kkk');
-    const res = yield '';
+  * search({ payload }) {
+    markStatus('dataStatus');
+    const data = yield getData(payload);
+    yield (state) => { state.data = data; };
 
-    yield any([Promise.resolve(2), Promise.all([sleep(1000), Promise.resolve(3)])], function* (pro, index) {
-      const result = yield pro;
-      yield (draft) => { draft.test2[index] = result; };
-    });
-    const t = Date.now();
-    yield this.abc();
-    yield ctx.abc();
-    try {
-      yield Promise.reject(-1);
-    } catch (e) {
-      console.log(e, 'eeeedasdsadas');
-    }
-    yield (state) => {
-      state.loading = false;
-    };
+    const otherState = yield 'a';
+    console.log('state a is : ', otherState);
+    const myState = yield '';
+    console.log('my state is : ', myState);
+  },
+  * getCate() {
+    return yield getData();
   },
 };

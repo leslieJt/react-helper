@@ -92,6 +92,7 @@ class Pager extends Component {
       sagaCache: new Map(),
       views: new Set(),
     };
+    this.ctxCache = new Map();
 
     if (typeof loader === 'function') {
       loader = loader();
@@ -142,6 +143,14 @@ class Pager extends Component {
       };
     }
     return null;
+  }
+
+  getCtx(obj) {
+    const str = JSON.stringify(obj);
+    if (!this.ctxCache.get(str)) {
+      this.ctxCache.set(str, obj);
+    }
+    return this.ctxCache.get(str);
   }
 
   componentDidMount() {
@@ -247,7 +256,7 @@ class Pager extends Component {
           [...views].map(u => (
             <CurrentPageContext.Provider
               key={u}
-              value={{ page, retain: retain && route, url: u, }}
+              value={this.getCtx({ page, retain: retain && route, url: u, })}
             >
               <PageComponent {...restProps} rrcPageActive={u === url} />
             </CurrentPageContext.Provider>

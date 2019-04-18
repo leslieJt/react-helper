@@ -23,7 +23,6 @@ const ok = () => false;
 const noop = () => {};
 
 function onchange(caller, e, page, val, mapping, url) {
-  console.log('called', url)
   const store = getStore();
   let value = e;
   if (e && e.target) {

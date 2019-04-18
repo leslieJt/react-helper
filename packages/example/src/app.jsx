@@ -28,7 +28,7 @@ const store = createStore(
     // redux devtools requires
     // eslint-disable-next-line
     window.__REDUX_DEVTOOLS_EXTENSION__ ? window.__REDUX_DEVTOOLS_EXTENSION__({
-      // actionsBlacklist: ['@@INNER'],
+      actionsBlacklist: ['@@INNER'],
     }) : f => f,
   ),
 );
