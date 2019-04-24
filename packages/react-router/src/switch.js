@@ -62,7 +62,7 @@ class Switch extends React.Component {
                     </div>
                   )).concat([match
                     ? (
-                      <div key={element.props.path}>
+                      <div key={element.props.path || 'defaultRoute....'}>
                         <DeactivatableWrapper active>
                           {React.cloneElement(element, { location, computedMatch: match })}
                         </DeactivatableWrapper>
