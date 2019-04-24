@@ -3,6 +3,7 @@ import Redirect from './redirect';
 import Route from './route';
 import Router from './router';
 import Switch from './switch';
+import NavLink from './nav-link';
 
 export {
   Link,
@@ -10,4 +11,5 @@ export {
   Route,
   Router,
   Switch,
+  NavLink,
 };
