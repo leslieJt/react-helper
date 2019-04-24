@@ -140,7 +140,8 @@ exports.reducers = function (components, config, ctx) {
 };
 
 exports.saga = function (components, config, ctx) {
-  const importHelper = new ImportHelper();
+  const importHelper = new ImportHelper(1e6);
+  importHelper.addDependencies('rrc-loader-helper/lib/retain', '{ setCtx as setCtx123 }');
   const resultList = [];
   const currentPath = ['.'];
   traverseTree(components, (value, key, hasChild) => {
@@ -153,6 +154,9 @@ exports.saga = function (components, config, ctx) {
       if (!metaInfo.mobx && (forceSync || metaInfo.sync)) {
         const identifier = importHelper.addDependencies(`${currentPath.join('/')}/saga.js`);
         resultList.push(identifier);
+      } else if (metaInfo.mobx && (forceSync || metaInfo.sync)) {
+        const identifier = importHelper.addDependencies(`${currentPath.join('/')}/${config.reducerName}.js`);
+        resultList.push(`function* () { yield setCtx123({ mobxStyle: true, page: ${JSON.stringify(currentPath.slice(1).join('/'))}, url: "" }); yield call(${identifier}.saga);}`);
       } else {
         resultList.push('""');
       }

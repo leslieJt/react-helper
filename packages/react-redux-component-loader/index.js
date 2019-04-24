@@ -52,7 +52,7 @@ module.exports = function rrcLoader(request) {
     store: 'store',
     reducerInject: 'reducers',
     reducerName,
-    reducerDecorator: '',
+    // @TODO remove reducerDecorator: '',
     dangerousRoute: false,
     retain: false,
   }, query);

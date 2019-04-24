@@ -22,6 +22,7 @@ export default function connect2(mapStateToProps, ...others) {
               class muteDispatch extends React.Component {
                 shouldComponentUpdate(nextProps) {
                   if (!this.props.rrcPageActive && nextProps.rrcPageActive) {
+                    // 处理不可见->可见时，部分组件获取高度的问题
                     setTimeout(() => this.setState({}), 1);
                     return false;
                   }
@@ -29,7 +30,9 @@ export default function connect2(mapStateToProps, ...others) {
                 }
 
                 render() {
-                  const { dispatch, otherParentProps: oProps, ...otherProps } = this.props;
+                  const {
+                    dispatch, rrcPageActive, otherParentProps: oProps, ...otherProps
+                  } = this.props;
                   return (
                     <PageComponent
                       dispatch={action => dispatch(enhanceAction(action, {
@@ -69,7 +72,7 @@ export default function connect2(mapStateToProps, ...others) {
                       otherParentProps={otherParentProps}
                       rrcPageActive={active}
                     />
-                </div>
+                  </div>
                 );
               }
               return <ConnectedComponent {...otherParentProps} />;
@@ -79,7 +82,10 @@ export default function connect2(mapStateToProps, ...others) {
       );
     }
     ResComponent.propTypes = {
-      rrcPageActive: PropTypes.bool.isRequired,
+      rrcPageActive: PropTypes.bool,
+    };
+    ResComponent.defaultProps = {
+      rrcPageActive: true,
     };
     ResComponent.isConnectedComponent = true;
     ResComponent.displayName = `NamespacePageComponent(${PageComponent.displayName || PageComponent.name})`;

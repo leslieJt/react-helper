@@ -1,9 +1,9 @@
 const path = require('path');
 
 class ImportHelper {
-  constructor() {
+  constructor(start = 0) {
     this.dependencies = {};
-    this.count = 0;
+    this.count = start;
   }
 
   addDependencies(dependency, name) {

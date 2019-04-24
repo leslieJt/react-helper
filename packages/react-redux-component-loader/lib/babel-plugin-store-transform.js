@@ -1,48 +1,61 @@
+const fs = require('fs');
+const nodePath = require('path');
+
 const currentPageContextName = 'RrcLoaderCurrentPageContext';
 const rawStoreVariable = 'temp_store_var__';
 const packageName = 'rrc-loader-helper';
 const meDotJsonReg = /me\.json$/;
 
+function shouldGenSpace(selfPath, filePath) {
+  const dirName = nodePath.dirname(filePath);
+  if (selfPath.indexOf(dirName)) return false;
+  const jsonFileName = nodePath.join(dirName, 'me.json');
+  if (!fs.existsSync(jsonFileName)) return false;
+  return require(jsonFileName).retain;
+}
+
+// @TODO 高阶函数处理仍然不正确
 module.exports = function BabelPluginStoreTransform(babel) {
   const { types: t, template: temp } = babel;
-  const consumerFnTemp = temp(`(currentPage) => { const store = ${rawStoreVariable}['.__inner__'].setCurrentPage(currentPage);}`);
-  const storeVarTemp = temp(`const store = ${rawStoreVariable}['.__inner__'].setCurrentPage(this.ThePageContext);`);
+  const consumerFnTemp = temp(`(currentPage) => { const store = ${rawStoreVariable}['.__inner__'].setCurrentPage(currentPage);}\n`);
+  const storeVarTemp = temp(`const store = ${rawStoreVariable}['.__inner__'].setCurrentPage(this.ThePageContext);\n`);
 
   return {
     name: 'babel-plugin-store-transform',
     visitor: {
       Program(programPath, state) {
         if (meDotJsonReg.test(state.file.opts.filename)) return;
-        const storeName = state.opts.storeName || 'store';
+        const storeName = state.opts.storeName || 'reducer';
         let shouldGen = false;
 
         programPath.traverse({
           ImportDeclaration(path) {
-            if (path.node.source.value === `./${storeName}`) {
-              path.node.specifiers.forEach((spec) => {
-                if (spec.type === 'ImportDefaultSpecifier') {
-                  spec.local.name = rawStoreVariable;
-                }
-              });
-              path.container.unshift(
-                t.importDeclaration(
-                  [t.ImportSpecifier(t.Identifier(currentPageContextName), t.Identifier('CurrentPageContext'))],
-                  t.StringLiteral(packageName),
-                ),
-              );
-              shouldGen = true;
+            if (path.node.source.value.endsWith(storeName)) {
+              const shouldSep = shouldGenSpace(state.file.opts.filename, nodePath.resolve(nodePath.dirname(state.file.opts.filename), path.node.source.value));
+
+              if (shouldSep) {
+                path.node.specifiers.forEach((spec) => {
+                  if (spec.type === 'ImportDefaultSpecifier') {
+                    spec.local.name = rawStoreVariable;
+                  }
+                });
+                path.container.unshift(
+                  t.importDeclaration(
+                    [t.ImportSpecifier(t.Identifier(currentPageContextName), t.Identifier('CurrentPageContext'))],
+                    t.StringLiteral(packageName),
+                  ),
+                );
+              }
+              shouldGen = shouldGen || shouldSep;
             }
           },
 
-          JSXElement(path) {
+          JSXElement(path, myState) {
             if (!shouldGen) return;
 
-            if (
-              !path.findParent(p => p.isJSXElement())
-              && !(
-                t.isJSXMemberExpression(path.node.openingElement.name)
-                && path.node.openingElement.name.object.name === currentPageContextName
-              )
+            if (!(
+              t.isJSXMemberExpression(path.node.openingElement.name)
+              && path.node.openingElement.name.object.name === currentPageContextName)
             ) {
               const fn = path.getFunctionParent();
               if (!fn.getFunctionParent() && !fn.isClassMethod()) {
@@ -67,22 +80,29 @@ module.exports = function BabelPluginStoreTransform(babel) {
               }
 
               if (fn.isClassMethod()) {
-                fn.findParent(p => p.isClassBody()).traverse({
-                  ClassMethod(p1) {
-                    if (p1.node.kind === 'constructor') {
-                      // @TODO constructor???
-                    } else {
-                      p1.get('body').unshiftContainer('body', storeVarTemp());
-                    }
-                  },
-                });
-                fn.findParent(p => p.isClassDeclaration())
-                  .get('superClass')
-                  .replaceWith(t.MemberExpression(t.Identifier('React'), t.Identifier('WithPageComponent')));
+                const classNode = fn.findParent(p => p.isClassBody());
+
+                if (!myState.doneClassBody.has(classNode)) {
+                  classNode.traverse({
+                    ClassMethod(p1) {
+                      if (p1.node.kind === 'constructor') {
+                        // @TODO constructor???
+                      } else {
+                        p1.get('body')
+                          .unshiftContainer('body', storeVarTemp());
+                      }
+                    },
+                  });
+                  fn.findParent(p => p.isClassDeclaration())
+                    .get('superClass')
+                    .replaceWith(t.MemberExpression(t.Identifier('React'), t.Identifier('WithPageComponent')));
+                }
+                myState.doneClassBody.add(classNode);
               }
             }
+            path.skip();
           },
-        });
+        }, { doneClassBody: new Set() });
       },
     },
   };
