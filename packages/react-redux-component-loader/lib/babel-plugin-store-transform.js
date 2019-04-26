@@ -19,7 +19,14 @@ module.exports = function BabelPluginStoreTransform(babel) {
   const { types: t, template: temp } = babel;
   const consumerFnTemp = temp(`(currentPage) => { const store = ${rawStoreVariable}['.__inner__'].setCurrentPage(currentPage);}\n`);
   const storeVarTemp = temp(`const store = ${rawStoreVariable}['.__inner__'].setCurrentPage(this.ThePageContext);\n`);
-
+  const cacheFnPartial = temp.ast(`function cacheFnPartial_(fn, arg) {
+  fn.cacheMap = fn.cacheMap || new Map();
+  const key = JSON.stringify(arg);
+  if (!fn.cacheMap.has(key)) {
+    fn.cacheMap.set(key, (...args) => fn(...args, arg));
+  }
+  return fn.cacheMap.get(key);
+}\n`);
   return {
     name: 'babel-plugin-store-transform',
     visitor: {
@@ -27,6 +34,7 @@ module.exports = function BabelPluginStoreTransform(babel) {
         if (meDotJsonReg.test(state.file.opts.filename)) return;
         const storeName = state.opts.storeName || 'reducer';
         let shouldGen = false;
+        const doneState = { doneClassBody: new Set(), doneFunction: new Set() };
 
         programPath.traverse({
           ImportDeclaration(path) {
@@ -98,11 +106,37 @@ module.exports = function BabelPluginStoreTransform(babel) {
                     .replaceWith(t.MemberExpression(t.Identifier('React'), t.Identifier('WithPageComponent')));
                 }
                 myState.doneClassBody.add(classNode);
+
+                doneState.doneFunction.add(fn.node);
               }
             }
             path.skip();
           },
-        }, { doneClassBody: new Set() });
+        }, doneState);
+
+        if (!shouldGen) return;
+        programPath.node.body.unshift(cacheFnPartial);
+        programPath.scope.getBinding('store').referencePaths.forEach((pt) => {
+          if (!pt.findParent(p => doneState.doneFunction.has(p.node))) {
+            const fnParent = pt.getFunctionParent();
+            if (fnParent.getFunctionParent()) {
+              // @TODO better error info
+              throw new Error('sorry, you write unsupported store.xxx');
+            }
+            fnParent.node.params.push(t.Identifier('store'));
+            let fnID = fnParent.node.id;
+            if (!fnID) {
+              fnID = fnParent.container.id;
+            }
+            const fnName = fnID.name;
+            programPath.scope.getBinding(fnName)
+              .referencePaths
+              .forEach(pt1 => pt1.replaceWith(
+                t.CallExpression(t.Identifier('cacheFnPartial_'),
+                  [t.Identifier(fnName), t.Identifier('store')]),
+              ));
+          }
+        });
       },
     },
   };

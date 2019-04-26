@@ -37,11 +37,13 @@ const tableColumns = [
   { title: '商品价格(RMB)', render: 'price' },
 ];
 
+const conv = () => store.getCate();
 
 class Compo extends React.Component {
   render() {
     const props = this.props;
     const status = props.match.params.id || '0';
+    conv();
     return (
       <div style={{ padding: 8 }}>
         <Tabs shape="line" active={status}>

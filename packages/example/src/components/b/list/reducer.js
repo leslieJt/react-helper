@@ -31,6 +31,6 @@ export default {
     return Promise.resolve(123);
   },
   * getCate() {
-    return yield getData();
+    return [1];
   },
 };
