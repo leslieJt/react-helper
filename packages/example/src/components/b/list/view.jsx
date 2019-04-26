@@ -60,7 +60,7 @@ class Compo extends React.Component {
                 ...data,
                 status,
               },
-            });
+            }).then(res => console.log('res: ', res));
           }}
         >
           <Form.Item label="SKU">

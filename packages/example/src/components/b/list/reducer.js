@@ -22,6 +22,13 @@ export default {
     console.log('state a is : ', otherState);
     const myState = yield '';
     console.log('my state is : ', myState);
+
+    const otherRes = yield this.otherMethod();
+    console.log('otherRes', otherRes);
+    return myState;
+  },
+  * otherMethod() {
+    return Promise.resolve(123);
   },
   * getCate() {
     return yield getData();

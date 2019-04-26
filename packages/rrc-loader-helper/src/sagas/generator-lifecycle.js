@@ -14,6 +14,8 @@ function popRunningStack() {
   markStatusStack.pop();
 }
 
+// markStatus will generate a paired extra yield
+// return a promise is ok, because promise.then is recursive
 export function addLifecycle(gen, {
   onAddStatus, onOk, onError, onYield
 }) {
@@ -29,6 +31,7 @@ export function addLifecycle(gen, {
         nextAction = 'next';
         if (done) {
           currentFrame = frameSnapshot;
+          val = value;
           break;
         }
         try {
@@ -48,14 +51,15 @@ export function addLifecycle(gen, {
         yield onOk(currentFrame);
       }
       if (doneMark) {
-        doneMark.resolve();
+        doneMark.resolve(val);
       }
+      return val;
     } catch (e) {
       if (currentFrame.length) {
         yield onError(currentFrame);
       }
       if (doneMark) {
-        doneMark.reject();
+        doneMark.reject(e);
       }
       throw e;
     } finally {

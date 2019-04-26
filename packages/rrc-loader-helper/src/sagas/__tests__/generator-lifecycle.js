@@ -128,4 +128,28 @@ describe('#module: mark-status', () => {
     expect(() => it.next()).toThrow();
     expect(onOk.mock.calls.length).toBe(0);
   });
+
+  test('should process result rightly', () => {
+    function* f() {
+      markStatus('zzz');
+      yield 1;
+      return 2;
+    }
+
+    const newF = addLifecycle(f, {
+      onAddStatus: jest.fn(),
+      onOk: jest.fn(),
+      onError: jest.fn(),
+      onYield: jest.fn(),
+    });
+
+    const it = newF();
+
+    it.next();
+    it.next();
+    it.next();
+    const result = it.next();
+    expect(result.done).toBe(true);
+    expect(result.value).toEqual(2);
+  });
 });
