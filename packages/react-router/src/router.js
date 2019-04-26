@@ -1,8 +1,31 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import warning from 'tiny-warning';
 
 import RouterContext from './router-context';
+
+function processKeepAlive() {
+  const dataName = 'data-lcd-keep-alive';
+  const start = 'hide-start';
+  const end = 'hide-end';
+  const markData = 'data-lcd-keep-alive-hide';
+  document.querySelectorAll(`[${markData}]`)
+    .forEach(it => it.removeAttribute(markData));
+  document.querySelectorAll(`[${dataName}=${start}]`)
+    .forEach((startNode) => {
+      let node = startNode.nextSibling;
+      let shouldConsumeEnd = 1;
+      while (shouldConsumeEnd) {
+        if (node.getAttribute(dataName) === start) {
+          shouldConsumeEnd += 1;
+        }
+        if (node.getAttribute(dataName) === end) {
+          shouldConsumeEnd -= 1;
+        }
+        node.setAttribute(markData, '');
+        node = node.nextSibling;
+      }
+    });
+}
 
 /**
  * The public API for putting history on context.
@@ -46,6 +69,10 @@ class Router extends React.Component {
     }
   }
 
+  componentDidUpdate() {
+    processKeepAlive();
+  }
+
   componentWillUnmount() {
     if (this.unlisten) this.unlisten();
   }
@@ -72,18 +99,12 @@ class Router extends React.Component {
   }
 }
 
-if (process.env.NODE_ENV !== 'production') {
-  Router.propTypes = {
-    children: PropTypes.node,
-    history: PropTypes.object.isRequired,
-  };
-
-  Router.prototype.componentDidUpdate = function (prevProps) {
-    warning(
-      prevProps.history === this.props.history,
-      'You cannot change <Router history>'
-    );
-  };
-}
+Router.propTypes = {
+  children: PropTypes.element.isRequired,
+  history: PropTypes.shape({
+    location: PropTypes.shape({}),
+    listen: PropTypes.func.isRequired,
+  }).isRequired,
+};
 
 export default Router;

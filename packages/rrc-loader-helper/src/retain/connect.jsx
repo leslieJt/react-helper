@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import {
   connect,
@@ -67,12 +67,14 @@ export default function connect2(mapStateToProps, ...others) {
 
               if (retain) {
                 return (
-                  <div style={{ display: active ? 'block' : 'none' }}>
+                  <Fragment>
+                    {!active && <br style={{ display: 'none' }} data-lcd-keep-alive="hide-start" />}
                     <ConnectedComponent
                       otherParentProps={otherParentProps}
                       rrcPageActive={active}
                     />
-                  </div>
+                    {!active && <br style={{ display: 'none' }} data-lcd-keep-alive="hide-end" />}
+                  </Fragment>
                 );
               }
               return <ConnectedComponent {...otherParentProps} />;

@@ -51,22 +51,23 @@ class Switch extends React.Component {
 
           return (
             <Fragment>
+              <br key="hide-start" style={{ display: 'none' }} data-lcd-keep-alive="hide-start" />
               {
                 [...this.retainRoutes.values()]
                   .filter(x => x.props.path !== element.props.path)
                   .map(ele => (
-                    <div style={{ display: 'none' }} key={ele.props.path}>
-                      <DeactivatableWrapper active={false}>
-                        {ele}
-                      </DeactivatableWrapper>
-                    </div>
-                  )).concat([match
+                    <DeactivatableWrapper key={ele.props.path} active={false}>
+                      {ele}
+                    </DeactivatableWrapper>
+                  ))
+                  .concat(
+                    <br key="hide-end" style={{ display: 'none' }} data-lcd-keep-alive="hide-end" />
+                  )
+                  .concat([match
                     ? (
-                      <div key={element.props.path || 'defaultRoute....'}>
-                        <DeactivatableWrapper active>
-                          {React.cloneElement(element, { location, computedMatch: match })}
-                        </DeactivatableWrapper>
-                      </div>
+                      <DeactivatableWrapper key={element.props.path || 'defaultRoute....' } active>
+                        {React.cloneElement(element, { location, computedMatch: match })}
+                      </DeactivatableWrapper>
                     )
                     : null])
               }
