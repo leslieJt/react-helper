@@ -1,4 +1,4 @@
-import createReactContext from 'create-react-context';
+import createReactContext from '@vve/create-react-context';
 
 const routerContext = createReactContext(null);
 routerContext.displayName = 'RRC-Router';

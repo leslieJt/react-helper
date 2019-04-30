@@ -1,4 +1,4 @@
-import createReactContext from 'create-react-context';
+import createReactContext from '@vve/create-react-context';
 
 let currentPage;
 const callbacks = [];

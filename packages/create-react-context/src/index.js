@@ -45,8 +45,8 @@ export default function createReactContext(defaultValue, calculateChangedBits) {
   const contextProp = '__create-react-context-' + gud() + '__';
 
   class Provider extends Component {
-    constructor(props) {
-      super(props);
+    constructor(props, context) {
+      super(props, context);
       this.emitter = createEventEmitter(this.props.value);
     }
 
@@ -95,8 +95,8 @@ export default function createReactContext(defaultValue, calculateChangedBits) {
   };
 
   class Consumer extends Component {
-    constructor(props) {
-      super(props);
+    constructor(props, context) {
+      super(props, context);
       this.state = {
         value: this.getValue()
       };
