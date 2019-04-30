@@ -19,7 +19,7 @@ module.exports = function BabelPluginStoreTransform(babel) {
   const { types: t, template: temp } = babel;
   const consumerFnTemp = temp(`(currentPage) => { const store = ${rawStoreVariable}['.__inner__'].setCurrentPage(currentPage);}\n`);
   const storeVarTemp = temp(`const store = ${rawStoreVariable}['.__inner__'].setCurrentPage(this.ThePageContext);\n`);
-  const cacheFnPartial = temp.ast(`function cacheFnPartial_(fn, arg) {
+  const cacheFnPartial = temp(`function cacheFnPartial_(fn, arg) {
   fn.cacheMap = fn.cacheMap || new Map();
   const key = JSON.stringify(arg);
   if (!fn.cacheMap.has(key)) {
@@ -115,7 +115,9 @@ module.exports = function BabelPluginStoreTransform(babel) {
         }, doneState);
 
         if (!shouldGen) return;
-        programPath.node.body.unshift(cacheFnPartial);
+        programPath.node.body.unshift(cacheFnPartial({
+          JSON: t.Identifier('JSON'),
+        }));
         programPath.scope.getBinding('store').referencePaths.forEach((pt) => {
           if (!pt.findParent(p => doneState.doneFunction.has(p.node))) {
             const fnParent = pt.getFunctionParent();

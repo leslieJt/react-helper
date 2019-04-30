@@ -1,0 +1,14 @@
+{
+  "name": "@vve/create-react-context",
+  "version": "1.0.0",
+  "peerDependencies": {
+    "react": ">=15"
+  },
+  "files": [
+    "lib/**"
+  ],
+  "main": "lib/index.js",
+  "scripts": {
+    "build": "babel src --out-dir lib"
+  }
+}
