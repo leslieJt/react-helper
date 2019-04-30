@@ -1,6 +1,6 @@
 {
   "name": "@vve/create-react-context",
-  "version": "1.0.0",
+  "version": "6.2.2",
   "peerDependencies": {
     "react": ">=15"
   },

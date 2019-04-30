@@ -1,6 +1,6 @@
 {
   "name": "@vve/react-router",
-  "version": "6.2.1-alpha.8",
+  "version": "6.2.2",
   "description": "react router for react-helper & with keep-alive",
   "main": "lib/index.js",
   "files": [
@@ -27,7 +27,7 @@
     "url": "https://github.com/sheinsight/react-router/ssues"
   },
   "dependencies": {
-    "@vve/create-react-context": "^1.0.0",
+    "@vve/create-react-context": "^6.2.2",
     "path-to-regexp": "^3.0.0",
     "tiny-invariant": "^1.0.4",
     "tiny-warning": "^1.0.2"
