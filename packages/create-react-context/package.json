@@ -1,16 +1,17 @@
 {
   "name": "@vve/create-react-context",
-  "version": "6.2.2",
+  "version": "6.2.3",
   "dependencies": {
-    "tiny-warning": "^1.0.2",
-    "gud": "^1.0.0"
+    "gud": "^1.0.0",
+    "tiny-warning": "^1.0.2"
   },
   "devDependencies": {
-
+    "react": "^16.7.0",
+    "prop-types": "^15.7.2"
   },
   "peerDependencies": {
-    "react": ">=15",
-    "prop-types": ">=15"
+    "prop-types": ">=15",
+    "react": ">=15"
   },
   "files": [
     "lib/**"
