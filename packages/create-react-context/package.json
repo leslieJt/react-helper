@@ -1,6 +1,6 @@
 {
   "name": "@vve/create-react-context",
-  "version": "1.0.0",
+  "version": "6.2.2",
   "dependencies": {
     "tiny-warning": "^1.0.2",
     "gud": "^1.0.0"
