@@ -116,7 +116,7 @@ module.exports = function BabelPluginStoreTransform(babel) {
 
         if (!shouldGen) return;
         programPath.node.body.unshift(cacheFnPartial({
-          JSON: t.StringLiteral('JSON'),
+          JSON: t.Identifier('JSON'),
         }));
         programPath.scope.getBinding('store').referencePaths.forEach((pt) => {
           if (!pt.findParent(p => doneState.doneFunction.has(p.node))) {
