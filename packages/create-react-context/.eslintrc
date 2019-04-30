@@ -1,0 +1,15 @@
+{
+  "extends": "airbnb",
+  "rules": {
+    "comma-dangle": "off",
+    "prefer-template": "off",
+    "react/jsx-filename-extension": "off",
+    "no-console": "off",
+    "import/no-unresolved": "off",
+    "no-param-reassign": "off"
+  },
+  "env": {
+    "jest": true,
+    "browser": true
+  }
+}

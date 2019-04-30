@@ -27,7 +27,7 @@
     "url": "https://github.com/sheinsight/react-router/ssues"
   },
   "dependencies": {
-    "create-react-context": "^0.2.3",
+    "@vve/create-react-context": "^1.0.0",
     "path-to-regexp": "^3.0.0",
     "tiny-invariant": "^1.0.4",
     "tiny-warning": "^1.0.2"
