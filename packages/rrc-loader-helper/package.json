@@ -1,6 +1,6 @@
 {
   "name": "rrc-loader-helper",
-  "version": "6.2.2",
+  "version": "6.2.3",
   "description": "",
   "main": "lib/index.js",
   "directories": {
@@ -30,8 +30,8 @@
   "homepage": "https://github.com/sheinsight/react-helper#readme",
   "dependencies": {
     "@babel/runtime": "^7.1.5",
-    "@vve/create-react-context": "^6.2.2",
-    "@vve/react-router": "^6.2.2",
+    "@vve/create-react-context": "^6.2.3",
+    "@vve/react-router": "^6.2.3",
     "@vve/redux-saga": "^6.2.2",
     "gud": "^1.0.0",
     "immer": "^1.7.4",
