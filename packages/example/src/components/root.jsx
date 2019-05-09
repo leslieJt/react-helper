@@ -13,11 +13,13 @@ import Login from './login/view';
 import Loading from './common/loading.jsx';
 import reducers from './index';
 
+const NotFound = () => <h1>404 not found!</h1>;
 
 const NavWrapper = ({ match }) => (
   <Nav>
     <Switch>
       __ROOT_ROUTE__
+      <Route path="*" component={NotFound} />
     </Switch>
   </Nav>
 );

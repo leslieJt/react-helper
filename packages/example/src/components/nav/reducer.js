@@ -20,6 +20,10 @@ export default {
           url: '#/b/a',
           title: '输入框',
         },
+        {
+          url: '#/lifecycle',
+          title: 'lifecycle',
+        },
       ];
     };
   },

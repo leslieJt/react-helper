@@ -11,6 +11,19 @@ const componentList = require('./lib/component-list');
 const UPDATE_SAGA = '@@INNER/UPDATE_SAGA';
 const { namespaceName } = require('./lib/babel-plugin-action-name-init');
 const { namespaceName: reducerEnhanceName, enhanceName } = require('./lib/babel-plugin-reducer-enhance');
+
+function getMeta(ctx) {
+  let json;
+  try {
+    // eslint-disable-next-line import/no-dynamic-require, global-require
+    json = require(path.join(path.dirname(ctx.resourcePath), 'me.json'));
+  } catch (e) {
+    json = {};
+  }
+
+  return json;
+}
+
 // @TODO how to improve the performance, may be by getter?
 module.exports = function rrcLoader(request) {
   let resultRequest = request;
@@ -23,13 +36,7 @@ module.exports = function rrcLoader(request) {
     return [`const ${namespaceName} = "/${namespace}/";`, request].join('\n');
   }
   if (ctx.resourcePath.endsWith(`/${reducerName}.js`)) {
-    let json;
-    try {
-      json = require(path.join(path.dirname(ctx.resourcePath), 'me.json'));
-    } catch (e) {
-      json = {};
-    }
-    if (json.mobx) {
+    if (getMeta(ctx).mobx) {
       return [
         `import ${enhanceName} from 'rrc-loader-helper/lib/mobx-adapter';`,
         `const ${reducerEnhanceName} = "${namespace}";`,
@@ -38,7 +45,7 @@ module.exports = function rrcLoader(request) {
     }
   }
   if (query.bundle) {
-    return generators.bundle(reducerName, ctx);
+    return generators.bundle(reducerName, ctx, getMeta(ctx).mobx);
   }
 
   const config = assign({

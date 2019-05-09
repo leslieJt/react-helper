@@ -167,7 +167,7 @@ exports.saga = function (components, config, ctx) {
   return [`[${resultList.join(',')}, ...Array(1000).fill(0)]`, importHelper.toImportList()];
 };
 
-exports.bundle = function (reducerName, ctx) {
+exports.bundle = function (reducerName, ctx, mobx) {
   const result = [];
   const importHelper = new ImportHelper();
 
@@ -177,7 +177,10 @@ exports.bundle = function (reducerName, ctx) {
     importHelper.addDependencies(`./${reducerName}`, 'r');
     result.push('export const reducer = r;');
   }
-  if (isExists(ctx, 'saga')) {
+  if (isExists(ctx, 'saga') && reducerName !== 'saga') {
+    if (mobx) {
+      throw new Error(`saga.js shouldn't exists in mobx style, please delete or rename it!(${path.join(ctx.context, 'saga.js')})`);
+    }
     importHelper.addDependencies('./saga', 's');
     result.push('export const saga = s;');
   }

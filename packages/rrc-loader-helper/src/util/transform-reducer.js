@@ -6,25 +6,16 @@ import {
   enhanceAction,
 } from '../retain';
 import { getStore } from '../inj-dispatch';
+import isGeneratorFunction from '../sagas/is-generator';
+import addSet from './addSetmethod';
 
 const maskKeys = ['defaultState', '$out'];
-
-function isGenerator(obj) {
-  return typeof obj.next === 'function' && typeof obj.throw === 'function';
-}
-
-function isGeneratorFunction(obj) {
-  const { constructor } = obj;
-  if (!constructor) return false;
-  if (constructor.name === 'GeneratorFunction' || constructor.displayName === 'GeneratorFunction') return true;
-  return isGenerator(constructor.prototype);
-}
 
 export default function (obj, page) {
   if (!(typeof obj === 'object' && !Array.isArray(obj))) {
     throw new Error('Your reducer must be an object, if you wanna use MobX style!');
   }
-  const originalObject = obj;
+  const originalObject = addSet(obj);
   const keys = Object.keys(originalObject).filter(x => maskKeys.indexOf(x) === -1);
   const result = {};
   const mapping = Object.create(originalObject);

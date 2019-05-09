@@ -98,6 +98,7 @@ module.exports = function BabelPluginStoreTransform(babel) {
                       } else {
                         p1.get('body')
                           .unshiftContainer('body', storeVarTemp());
+                        doneState.doneFunction.add(p1.node);
                       }
                     },
                   });

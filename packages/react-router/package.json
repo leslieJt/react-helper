@@ -28,7 +28,7 @@
   },
   "dependencies": {
     "@vve/create-react-context": "^6.2.3",
-    "path-to-regexp": "^3.0.0",
+    "path-to-regexp": "^1.7.0",
     "tiny-invariant": "^1.0.4",
     "tiny-warning": "^1.0.2"
   },
