@@ -30,7 +30,8 @@
     "@vve/create-react-context": "^6.2.3",
     "path-to-regexp": "^1.7.0",
     "tiny-invariant": "^1.0.4",
-    "tiny-warning": "^1.0.2"
+    "tiny-warning": "^1.0.2",
+    "react-is": "^16.6.0"
   },
   "devDependencies": {
     "history": "^4.9.0",

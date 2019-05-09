@@ -18,6 +18,7 @@ test('#transform reducer', () => {
   const expected = {
     hello: result.hello,
     zz: result.zz,
+    set: result.set,
     '.__inner__': {
       originalObject: raw,
       mapping: Object.assign(Object.create(raw), {
